@@ -1,0 +1,10 @@
+{% macro nav_item(view, title) -%}
+  {#
+   # ???
+   #}
+  {% if request.resolver_match.view_name == view %}
+    <a href="{{ url(view) }}" class="ml-6 text-gray-500 text-sm uppercase">{{ title }}</a>
+  {% else %}
+    <a href="{{ url(view) }}" class="ml-6 text-sm hover:underline uppercase">{{ title }}</a>
+  {% endif %}
+{%- endmacro %}

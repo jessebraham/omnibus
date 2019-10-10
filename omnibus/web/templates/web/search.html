@@ -1,0 +1,33 @@
+{% extends "web/partials/base.html" %}
+{% from "web/macros/search_results.jinja" import results_count, result_item %}
+
+
+{% block title %}
+Search - Omnibus
+{% endblock %}
+
+
+{% block content %}
+<p class="mb-3">Search books by title, author, or ISBN</p>
+
+<form method="post" action="{{ url('search') }}" class="mb-12">
+  <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+  <input name="query" placeholder="Search" class="border border-gray-900 px-2 py-1 w-full" autofocus />
+</form>
+
+<div>
+{% if results %}
+  {{ results_count(results) }}
+
+  {% for work in results["results"]["work"] %}
+    {{ result_item(work, read) }}
+  {% endfor %}
+
+  {% if results["results_end"] < results["total_results"] %}
+    <p class="mt-6">
+      <a href="#" class="text-gray-700 text-sm hover:underline uppercase">Load more</a>
+    </p>
+  {% endif %}
+{% endif %}
+</div>
+{% endblock %}

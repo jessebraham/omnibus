@@ -1,0 +1,41 @@
+{% macro results_count(data) -%}
+  {#
+   # Indicate the number of displayed and total number of results.
+   #}
+  {% if data["total_results"] > "0" %}
+    <p class="mb-3">Displaying {{ data["results"]["work"]|length }} of {{ data["total_results"] }} results</p>
+  {% else %}
+    <p>Displaying 0 results</p>
+  {% endif %}
+{%- endmacro %}
+
+{% macro result_item(work, read) -%}
+  {#
+   # ???
+   #}
+  <div class="flex justify-between py-6">
+    <figure class="mr-6">
+      <img src="{{ work['best_book']['image_url'] }}" />
+    </figure>
+    <div class="flex flex-col justify-center flex-1 pr-6">
+      <p class="flex items-center text-lg uppercase">
+        {{ work["best_book"]["title"] }}
+        {% if work["original_publication_year"] %}
+          <span class="ml-2 text-gray-700 text-sm">({{ work["original_publication_year"] }})</span>
+        {% endif %}
+      </p>
+      <p>{{ work["best_book"]["author"]["name"] }}</p>
+      <p class="flex items-center mt-2">
+        <span>{{ work["average_rating"] }}</span>
+        <span class="ml-2 text-gray-700 text-sm">({{ work["ratings_count"] }})</span>
+      </p>
+    </div>
+    <div class="flex items-center ml-6">
+    {% if work["best_book"]["id"] in read %}
+      <a href="#" data-book-id="{{ work['best_book']['id'] }}" class="mark-as-unread text-gray-700 text-sm hover:underline uppercase">Read</a>
+    {% else %}
+      <a href="#" data-book-id="{{ work['best_book']['id'] }}" class="mark-as-read text-gray-700 text-sm hover:underline uppercase">Mark as read</a>
+    {% endif %}
+    </div>
+  </div>
+{%- endmacro %}

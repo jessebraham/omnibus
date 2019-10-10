@@ -1,0 +1,11 @@
+{% from "web/macros/nav_item.jinja" import nav_item with context %}
+
+<header class="bg-gray-900 text-gray-200">
+  <div class="container flex justify-between mx-auto px-6 py-6">
+    <a href="{{ url('index') }}" class="font-thin text-xl tracking-wide uppercase">Omnibus</a>
+    <nav>
+      {{ nav_item("index", "Home") }}
+      {{ nav_item("search", "Search") }}
+    </nav>
+  </div>
+</header>
