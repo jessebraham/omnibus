@@ -2,13 +2,17 @@
 
 
 {% block title %}
-Omnibus
+{{ series.title }} - Omnibus
 {% endblock %}
 
 
 {% block content %}
-{% endblock %}
+<h1 class="text-lg uppercase">{{ series.title }}</h1>
+<p class="my-6">{{ series.description.replace("\n", "<br />")|safe }}</p>
 
-
-{% block scripts %}
+<div class="flex flex-wrap">
+  {% for book in books %}
+    <img src="{{ book.image_url }}" title="{{ book.title }}" class="thumbnail" />
+  {% endfor %}
+</div>
 {% endblock %}

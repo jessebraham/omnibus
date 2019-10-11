@@ -1,7 +1,7 @@
 from collections import defaultdict
 
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 from goodreads.client import GoodreadsClient
 from goodreads.models import Author, Book, Series
@@ -16,14 +16,23 @@ def index(request):
         else:
             series["Uncategorized"].append(book)
 
-    return render(request, "web/index.html", context={"series": series})
+    return render(
+        request,
+        "web/index.html",
+        context={
+            "series": series,
+            "num_authors": Author.objects.count(),
+            "num_books": Book.objects.count(),
+            "num_series": Series.objects.count(),
+        },
+    )
 
 
 def search(request):
     query = request.POST.get("query")
-    results = GoodreadsClient.search(query)
-
-    if results:
+    if query is not None:
+        results = GoodreadsClient.search(query)
+        request.session["search_results"] = results
         context = {
             "results": results,
             "read": [b.id for b in Book.objects.all()],
@@ -31,13 +40,18 @@ def search(request):
     else:
         context = {}
 
-    request.session["search_results"] = results
-
     return render(request, "web/search.html", context=context)
 
 
 def series(request, series_id):
-    return render(request, "web/series.html")
+    books = Book.objects.filter(series__id__exact=series_id)
+    series = books[0].series if books else None
+    if series is None:
+        return redirect("index")
+
+    return render(
+        request, "web/series.html", context={"books": books, "series": series}
+    )
 
 
 def book(request, book_id):
