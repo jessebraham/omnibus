@@ -1,10 +1,11 @@
-{% macro nav_item(view, title) -%}
+{% macro nav_item(view_name, title) -%}
   {#
-   # ???
+   # Create a nav item, setting the active state of the item corresponding
+   # to the current view.
    #}
-  {% if request.resolver_match.view_name == view %}
-    <a href="{{ url(view) }}" class="ml-6 text-gray-500 text-sm uppercase">{{ title }}</a>
+  {% if request.resolver_match.view_name == view_name %}
+    <a href="#" class="ml-6 text-gray-500">{{ title }}</a>
   {% else %}
-    <a href="{{ url(view) }}" class="ml-6 text-sm hover:underline uppercase">{{ title }}</a>
+    <a href="{{ url(view_name) }}" class="ml-6 hover:underline">{{ title }}</a>
   {% endif %}
 {%- endmacro %}

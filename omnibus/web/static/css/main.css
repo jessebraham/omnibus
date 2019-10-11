@@ -3,3 +3,19 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+
+/* Element styles */
+
+a {
+  @apply text-sm uppercase;
+}
+
+
+/* Component styles */
+
+.thumbnail {
+  @apply mb-1 mr-1;
+  height: 152px;
+  width: 98px;
+}
