@@ -12,9 +12,9 @@ def index(request):
     series = defaultdict(list)
     for book in Book.objects.all():
         if book.series is not None:
-            series[book.series.title].append(book)
+            series[(book.series.title, book.series.id)].append(book)
         else:
-            series["Uncategorized"].append(book)
+            series[("Uncategorized", 0)].append(book)
 
     return render(
         request,

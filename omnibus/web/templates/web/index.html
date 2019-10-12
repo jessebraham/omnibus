@@ -5,11 +5,13 @@
   <p class="mb-6">Displaying {{ num_series }} series comprising of {{ num_books }} books by {{ num_authors }} authors.</p>
 
   <div class="flex flex-col">
-    {% for series_title in series|sort %}
+    {% for (series_title, series_id) in series|sort %}
       <div class="flex flex-col mb-6 py-3">
-        <a href="#" class="mb-3 text-lg hover:underline">{{ series_title }}</a>
+        <div class="mb-3">
+          <a href="{{ url('series', args=[series_id]) }}" class="text-lg hover:underline">{{ series_title }}</a>
+        </div>
         <div class="flex flex-wrap">
-          {% for book in series[series_title] %}
+          {% for book in series[(series_title, series_id)] %}
             <img src="{{ book.image_url }}" title="{{ book.title }}" class="thumbnail" />
           {% endfor %}
         </div>
