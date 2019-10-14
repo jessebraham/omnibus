@@ -10,37 +10,53 @@ class GoodreadsClient:
     API_URL = "https://www.goodreads.com"
 
     @classmethod
-    def search(cls, query, page=1):
-        r = httpx.get(
-            f"{cls.API_URL}/search/index.xml",
-            params={
-                "key": settings.GOODREADS_API_KEY,
-                "q": query,
-                "page": page,
-            },
+    def book(cls, book_id):
+        return cls._api_request(
+            f"{cls.API_URL}/book/show/{book_id}.xml", "book"
         )
-        r.raise_for_status()
 
-        resp = xmltodict.parse(r.content)
-        resp = resp["GoodreadsResponse"]["search"]
+    @classmethod
+    def shelf(cls, user_id, shelf, page=1):
+        return cls._api_request(
+            f"{cls.API_URL}/review/list/{user_id}.xml",
+            "reviews",
+            {"shelf": shelf, "page": page, "per_page": 200, "v": 2},
+        )
 
-        return cls.process_response(resp)
+    @classmethod
+    def search(cls, query, page=1):
+        return cls._api_request(
+            f"{cls.API_URL}/search/index.xml",
+            "search",
+            {"q": query, "page": page},
+        )
 
     @classmethod
     def series(cls, work_id):
-        r = httpx.get(
-            f"{cls.API_URL}/work/{work_id}/series",
-            params={"key": settings.GOODREADS_API_KEY},
+        return cls._api_request(
+            f"{cls.API_URL}/work/{work_id}/series", "series_works"
         )
-        r.raise_for_status()
-
-        resp = xmltodict.parse(r.content)
-        resp = resp["GoodreadsResponse"]["series_works"]
-
-        return cls.process_response(resp)
 
     @classmethod
-    def process_response(cls, data):
+    def _api_request(cls, url, resp_key, params={}):
+        # Ensure the `params` dict always has "key" set to the configured
+        # Goodreads API key.
+        params.update({"key": settings.GOODREADS_API_KEY})
+
+        # Make the GET request using the provided URL and parameters, raising
+        # an exception if an error occurs.
+        r = httpx.get(url, params=params, timeout=30)
+        r.raise_for_status()
+
+        # Parse the response to a dict, and extract the data under the provided
+        # `resp_key`.
+        resp = xmltodict.parse(r.content)
+        resp = resp["GoodreadsResponse"][resp_key]
+
+        return cls._process_response(resp)
+
+    @classmethod
+    def _process_response(cls, data):
         resp = {}
 
         if data is None:
@@ -63,11 +79,11 @@ class GoodreadsClient:
                 # Otherwise, the value is another nested OrderedDict, so we'll
                 # recurse.
                 else:
-                    resp[key] = cls.process_response(value)
+                    resp[key] = cls._process_response(value)
             elif type(value) == list:
                 # Process each child and associate the resulting values with
                 # `key`.
-                resp[key] = [cls.process_response(v) for v in value]
+                resp[key] = [cls._process_response(v) for v in value]
             else:
                 # If the value is not an OrderedDict, simply carry its
                 # key/value forward.
