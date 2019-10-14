@@ -66,14 +66,16 @@ def add(request):
     if not book_id:
         return JsonResponse({"success": False, "error": "no book_id provided"})
 
-    book = GoodreadsClient.book(book_id)
-    book = BookSchema().load(book)
+    resp = GoodreadsClient.book(book_id)
+    book = BookSchema().load(resp)
 
-    book.series = try_get_series(book["work"][0]["id"])
+    book.series = try_get_series(resp["work"][0]["id"])
     if book.series is not None:
         book.series.save()
 
+    book.author = AuthorSchema().load(resp["authors"]["author"][0])
     book.author.save()
+
     book.save()
 
     return JsonResponse({"success": True, "error": None})

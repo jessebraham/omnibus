@@ -59,7 +59,7 @@ class GoodreadsClient:
     def _process_response(cls, data):
         resp = {}
 
-        if type(data) != dict:
+        if data is None:
             return resp
 
         for (key, value) in data.items():
