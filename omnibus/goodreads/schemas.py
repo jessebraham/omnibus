@@ -33,11 +33,17 @@ class BookSchema(Schema):
         unknown = EXCLUDE
 
     id = fields.Integer()
-    title = fields.String()
     author = fields.Nested(AuthorSchema)
     series = fields.Nested(SeriesSchema)
+    title = fields.String()
+    title_without_series = fields.String()
+    description = fields.String(allow_none=True)
     image_url = fields.Url()
-    published = fields.Date()
+    small_image_url = fields.Url(allow_none=True)
+    large_image_url = fields.Url(allow_none=True)
+    num_pages = fields.Integer(allow_none=True)
+    publisher = fields.String(allow_none=True)
+    published = fields.Integer(allow_none=True)
     average_rating = fields.Float()
     ratings_count = fields.Integer()
 

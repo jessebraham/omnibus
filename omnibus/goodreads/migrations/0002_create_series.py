@@ -4,6 +4,17 @@ from django.db import migrations, models
 import django.db.models.deletion
 
 
+def create_uncategorized_series(apps, schema_editor):
+    # We can't import the Series model directly as it may be a newer version
+    # than this migration expects. We use the historical version.
+    Series = apps.get_model("goodreads", "Series")
+
+    # Create the Uncategorized series for any Books who do not specify their
+    # own series.
+    uncategorized = Series(id=0, title="Uncategorized")
+    uncategorized.save()
+
+
 class Migration(migrations.Migration):
 
     dependencies = [("goodreads", "0001_initial")]
@@ -30,4 +41,5 @@ class Migration(migrations.Migration):
                 to="goodreads.Series",
             ),
         ),
+        migrations.RunPython(create_uncategorized_series),
     ]
