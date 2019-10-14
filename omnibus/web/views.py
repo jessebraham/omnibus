@@ -1,41 +1,33 @@
-from collections import defaultdict
-
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
 from goodreads.client import GoodreadsClient
-from goodreads.models import Author, Book, Series
-from goodreads.schemas import BookSchema, SeriesSchema
+from goodreads.models import Book
+from goodreads.schemas import AuthorSchema, BookSchema
+
+from .helpers import (
+    books_read_by_user,
+    collection_stats,
+    sort_books_by_series,
+    try_get_series,
+)
 
 
 def index(request):
-    series = defaultdict(list)
-    for book in Book.objects.all():
-        if book.series is not None:
-            series[(book.series.title, book.series.id)].append(book)
-        else:
-            series[("Uncategorized", 0)].append(book)
-
     return render(
         request,
         "web/index.html",
-        context={
-            "series": series,
-            "num_authors": Author.objects.count(),
-            "num_books": Book.objects.count(),
-            "num_series": Series.objects.count(),
-        },
+        context={"series": sort_books_by_series(), "stats": collection_stats()},
     )
 
 
 def search(request):
     query = request.POST.get("query")
     if query is not None:
-        results = GoodreadsClient.search(query)
-        request.session["search_results"] = results
+        page = request.POST.get("page", 1)
         context = {
-            "results": results,
-            "read": [b.id for b in Book.objects.all()],
+            "results": GoodreadsClient.search(query, page),
+            "read": {b.id for b in Book.objects.all()},
         }
     else:
         context = {}
@@ -60,26 +52,35 @@ def book(request, book_id):
 
 def add(request):
     book_id = request.GET.get("book_id")
+    if not book_id:
+        return JsonResponse({"success": False, "error": "no book_id provided"})
 
-    works = request.session["search_results"]["results"]["work"]
-    work = next(w for w in works if w["best_book"]["id"] == int(book_id))
+    book = GoodreadsClient.book(book_id)
+    book = BookSchema().load(book)
 
-    try:
-        series = GoodreadsClient.series(work["id"])
-        series = series["series_work"]
-        if type(series) == list:
-            series = series[0]
-        series = series["series"]
-        series = SeriesSchema().load(series)
-    except:
-        series = None
-
-    book = BookSchema().load(work["best_book"])
-    book.series = series
-
-    book.author.save()
+    book.series = try_get_series(book["work"][0]["id"])
     if book.series is not None:
         book.series.save()
+
+    book.author.save()
     book.save()
 
-    return JsonResponse({"success": True, "errors": []})
+    return JsonResponse({"success": True, "error": None})
+
+
+def sync(request, user_id):
+    author_schema = AuthorSchema()
+    book_schema = BookSchema()
+
+    for result in books_read_by_user(user_id):
+        book = book_schema.load(result["book"])
+        book.author = author_schema.load(result["book"]["authors"]["author"])
+        book.series = try_get_series(result["book"]["work"][0]["id"])
+
+        if book.series is not None:
+            book.series.save()
+
+        book.author.save()
+        book.save()
+
+    return JsonResponse({"success": True, "error": None})

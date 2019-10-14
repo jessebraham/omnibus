@@ -2,7 +2,11 @@
 
 
 {% block content %}
-  <p class="mb-6">Displaying {{ num_series }} series comprising of {{ num_books }} books by {{ num_authors }} authors.</p>
+  <p class="mb-6">
+    Displaying {{ stats["total_series"] }} series comprising of {{ stats["total_books"] }} books by {{ stats["total_authors"] }} authors.
+    <br />
+    Most popular author is {{ stats["top_author"] }} with {{ stats["top_author_count"] }} books.
+  </p>
 
   <div class="flex flex-col">
     {% for (series_title, series_id) in series|sort %}
