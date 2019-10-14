@@ -22,12 +22,13 @@ def index(request):
 
 
 def search(request):
-    query = request.POST.get("query")
+    query = request.GET.get("query")
     if query is not None:
-        page = request.POST.get("page", 1)
+        page = request.GET.get("page", 1)
         context = {
             "results": GoodreadsClient.search(query, page),
             "read": {b.id for b in Book.objects.all()},
+            "page": page,
         }
     else:
         context = {}

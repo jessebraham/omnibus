@@ -4,7 +4,7 @@
    # given search.
    #}
   {% if data["total_results"]|int > 0 %}
-    <p class="mb-3">Displaying {{ data["results"]["work"]|length }} of {{ data["total_results"] }} results for "{{ data["query"] }}"</p>
+    <p class="mb-6">Displaying {{ data["results_start"] }}-{{ data["results_end"] }} of {{ data["total_results"] }} results for "{{ data["query"] }}"</p>
   {% else %}
     <p>Displaying 0 results for "{{ data["query"] }}"</p>
   {% endif %}
@@ -39,5 +39,17 @@
         <span data-book-id="{{ work['best_book']['id'] }}" class="mark-as-read cursor-pointer text-gray-700 text-sm hover:underline uppercase">Mark as read</span>
       {% endif %}
     </div>
+  </div>
+{%- endmacro %}
+
+{% macro paginator(results, page) -%}
+  <div class="flex items-center justify-center mt-12">
+    {% if results["results_start"]|int > 1 %}
+      <span class="prev-page cursor-pointer text-gray-700 text-sm hover:underline uppercase w-20">Prev</span>
+    {% endif %}
+    <p class="px-6 text-center text-sm uppercase">Page {{ page }}</p>
+    {% if results["results_end"]|int < results["total_results"]|int %}
+      <span class="next-page cursor-pointer text-gray-700 text-sm text-right hover:underline uppercase w-20">Next</span>
+    {% endif %}
   </div>
 {%- endmacro %}
