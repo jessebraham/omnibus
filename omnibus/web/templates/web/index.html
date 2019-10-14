@@ -1,4 +1,5 @@
 {% extends "web/partials/base.html" %}
+{% from "web/macros/images.jinja" import thumbnail %}
 
 
 {% block content %}
@@ -11,14 +12,12 @@
   <div class="flex flex-col">
     {% for (series_title, series_id) in series|sort %}
       <div class="border border-gray-400 bg-white flex flex-col mb-3 px-6 py-3 rounded">
-        <div class="mb-3">
+        <div class="mb-6">
           <a href="{{ url('series', args=[series_id]) }}" class="text-lg hover:underline">{{ series_title }}</a>
         </div>
         <div class="flex flex-wrap">
           {% for book in series[(series_title, series_id)] %}
-            <a href="{{ url('book', args=[book.id]) }}" title="{{ book.title }}">
-              <img src="{{ book.image_url }}" class="thumbnail" />
-            </a>
+            {{ thumbnail(book) }}
           {% endfor %}
         </div>
       </div>

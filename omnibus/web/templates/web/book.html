@@ -9,9 +9,14 @@
 {% block content %}
 <div class="border border-gray-400 bg-white px-6 py-3 rounded">
   <h1 class="text-lg uppercase">{{ book.title }}</h1>
-  <p class="my-6">{{ book.description.replace("\n", "<br />")|safe }}</p>
+  {% if book.publisher %}
+    <h2 class="text-gray-700 uppercase">{{ book.publisher }}</h2>
+  {% endif %}
+  {% if book.description %}
+    <div class="my-6">{{ book.description.replace("\n", "<br />")|safe }}</div>
+  {% endif %}
 
-  <img src="{{ book.image_url }}" title="{{ book.title }}" class="thumbnail" />
+  <img src="{{ book.image_url }}" title="{{ book.title }}" />
 </div>
 {% endblock %}
 

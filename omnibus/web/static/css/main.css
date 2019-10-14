@@ -15,7 +15,15 @@ a {
 /* Component styles */
 
 .thumbnail {
-  @apply mb-1 mr-1;
-  height: 152px;
+  @apply break-words mb-1 mr-1;
+}
+.thumbnail,
+.thumbnail img {
   width: 98px;
+}
+.thumbnail img {
+  height: 152px;
+}
+.thumbnail figcaption {
+  @apply p-1 text-xs;
 }
