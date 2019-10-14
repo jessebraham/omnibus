@@ -2,7 +2,7 @@
 
 
 {% block content %}
-  <p class="mb-6">
+  <p class="mb-12">
     Displaying {{ stats["total_series"] }} series comprising of {{ stats["total_books"] }} books by {{ stats["total_authors"] }} authors.
     <br />
     Most popular author is {{ stats["top_author"] }} with {{ stats["top_author_count"] }} books.
@@ -10,13 +10,15 @@
 
   <div class="flex flex-col">
     {% for (series_title, series_id) in series|sort %}
-      <div class="flex flex-col mb-6 py-3">
+      <div class="border border-gray-400 bg-white flex flex-col mb-3 px-6 py-3 rounded">
         <div class="mb-3">
           <a href="{{ url('series', args=[series_id]) }}" class="text-lg hover:underline">{{ series_title }}</a>
         </div>
         <div class="flex flex-wrap">
           {% for book in series[(series_title, series_id)] %}
-            <img src="{{ book.image_url }}" title="{{ book.title }}" class="thumbnail" />
+            <a href="{{ url('book', args=[book.id]) }}" title="{{ book.title }}">
+              <img src="{{ book.image_url }}" class="thumbnail" />
+            </a>
           {% endfor %}
         </div>
       </div>

@@ -47,7 +47,11 @@ def series(request, series_id):
 
 
 def book(request, book_id):
-    return render(request, "web/book.html")
+    book = Book.objects.get(id__exact=book_id)
+    if not book:
+        return redirect("index")
+
+    return render(request, "web/book.html", context={"book": book})
 
 
 def add(request):

@@ -7,12 +7,16 @@
 
 
 {% block content %}
-<h1 class="text-lg uppercase">{{ series.title }}</h1>
-<p class="my-6">{{ series.description.replace("\n", "<br />")|safe }}</p>
+<div class="border border-gray-400 bg-white px-6 py-3 rounded">
+  <h1 class="text-lg uppercase">{{ series.title }}</h1>
+  <p class="my-6">{{ series.description.replace("\n", "<br />")|safe }}</p>
 
-<div class="flex flex-wrap">
-  {% for book in books %}
-    <img src="{{ book.image_url }}" title="{{ book.title }}" class="thumbnail" />
-  {% endfor %}
+  <div class="flex flex-wrap">
+    {% for book in books %}
+      <a href="{{ url('book', args=[book.id]) }}" title="{{ book.title }}">
+        <img src="{{ book.image_url }}" class="thumbnail" />
+      </a>
+    {% endfor %}
+  </div>
 </div>
 {% endblock %}
