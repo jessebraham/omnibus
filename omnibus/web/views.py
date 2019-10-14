@@ -37,7 +37,13 @@ def search(request):
 
 
 def series(request, series_id):
-    books = Book.objects.filter(series__id__exact=series_id)
+    # Retrieve a list of all Book objects with a Series matching the provided
+    # series ID, ordered by their titles.
+    books = Book.objects.filter(series__id__exact=series_id).order_by("title")
+
+    # If any Books are returned, they all have the same Series; store the
+    # Series of the first result. Otherwise, the specified Series does not
+    # exist to simply redirect back to the Index.
     series = books[0].series if books else None
     if series is None:
         return redirect("index")

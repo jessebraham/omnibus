@@ -16,14 +16,6 @@ class GoodreadsClient:
         )
 
     @classmethod
-    def shelf(cls, user_id, shelf, page=1):
-        return cls._api_request(
-            f"{cls.API_URL}/review/list/{user_id}.xml",
-            "reviews",
-            {"shelf": shelf, "page": page, "per_page": 200, "v": 2},
-        )
-
-    @classmethod
     def search(cls, query, page=1):
         return cls._api_request(
             f"{cls.API_URL}/search/index.xml",
@@ -35,6 +27,14 @@ class GoodreadsClient:
     def series(cls, work_id):
         return cls._api_request(
             f"{cls.API_URL}/work/{work_id}/series", "series_works"
+        )
+
+    @classmethod
+    def shelf(cls, user_id, shelf, page=1):
+        return cls._api_request(
+            f"{cls.API_URL}/review/list/{user_id}.xml",
+            "reviews",
+            {"shelf": shelf, "page": page, "per_page": 200, "v": 2},
         )
 
     @classmethod
@@ -59,7 +59,7 @@ class GoodreadsClient:
     def _process_response(cls, data):
         resp = {}
 
-        if data is None:
+        if type(data) != dict:
             return resp
 
         for (key, value) in data.items():
@@ -76,6 +76,11 @@ class GoodreadsClient:
                 # integer.
                 elif "@type" in value and value["@type"] == "integer":
                     resp[key] = int(value["#text"])
+                # If the '@type' key is present and its value is 'float',
+                # convert the value associated with the '#text' key to a
+                # float.
+                elif "@type" in value and value["@type"] == "float":
+                    resp[key] = float(value["#text"])
                 # Otherwise, the value is another nested OrderedDict, so we'll
                 # recurse.
                 else:

@@ -12,8 +12,34 @@
   {% if book.publisher %}
     <h2 class="text-gray-700 uppercase">{{ book.publisher }}</h2>
   {% endif %}
+
+  <table class="my-6">
+    <tr>
+      <td class="align-bottom pr-6 text-sm uppercase">Author</td>
+      <td>{{ book.author.name }}</td>
+    </tr>
+    {% if book.series %}
+    <tr>
+      <td class="align-bottom pr-6 text-sm uppercase">Series</td>
+      <td><a href="{{ url('series', args=[book.series.id]) }}" class="hover:underline">{{ book.series.title }}</a></td>
+    </tr>
+    {% endif %}
+    <tr>
+      <td class="align-bottom pr-6 text-sm uppercase">Published</td>
+      <td>{{ book.published }}</td>
+    </tr>
+    <tr>
+      <td class="align-bottom pr-6 text-sm uppercase">Page Count</td>
+      <td>{{ book.num_pages }}</td>
+    </tr>
+    <tr>
+      <td class="align-bottom pr-6 text-sm uppercase">Rating</td>
+      <td>{{ book.average_rating }} <span class="text-xs">({{ book.ratings_count }})</span></td>
+    </tr>
+  </table>
+
   {% if book.description %}
-    <div class="my-6">{{ book.description.replace("\n", "<br />")|safe }}</div>
+    <p class="my-12">{{ book.description.replace("\n", "<br />")|safe }}</p>
   {% endif %}
 
   <img src="{{ book.image_url }}" title="{{ book.title }}" />
