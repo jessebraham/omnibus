@@ -145,3 +145,5 @@ WEBPACK_LOADER = {
 # https://www.goodreads.com/api/index
 
 GOODREADS_API_KEY = os.environ.get("GOODREADS_API_KEY")
+
+GOODREADS_USER_ID = os.environ.get("GOODREADS_USER_ID")

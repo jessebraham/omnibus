@@ -15,9 +15,7 @@ from .helpers import (
 
 def index(request):
     return render(
-        request,
-        "web/index.html",
-        context={"series": sort_books_by_series(), "stats": collection_stats()},
+        request, "web/index.html", context={"series": sort_books_by_series()}
     )
 
 
@@ -34,6 +32,12 @@ def search(request):
         context = {}
 
     return render(request, "web/search.html", context=context)
+
+
+def stats(request):
+    return render(
+        request, "web/stats.html", context={"stats": collection_stats()}
+    )
 
 
 def series(request, series_id):
@@ -81,11 +85,11 @@ def add(request):
     return JsonResponse({"success": True, "error": None})
 
 
-def sync(request, user_id):
+def sync(request):
     author_schema = AuthorSchema()
     book_schema = BookSchema()
 
-    for result in books_read_by_user(user_id):
+    for result in books_read_by_user():
         book = book_schema.load(result["book"])
         book.author = author_schema.load(result["book"]["authors"]["author"])
         book.series = try_get_series(result["book"]["work"][0]["id"])
@@ -96,4 +100,4 @@ def sync(request, user_id):
         book.author.save()
         book.save()
 
-    return JsonResponse({"success": True, "error": None})
+    return redirect("stats")

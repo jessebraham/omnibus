@@ -5,10 +5,17 @@
 @import "tailwindcss/utilities";
 
 
-/* Element styles */
+/* Base Element styles */
 
 a {
   @apply text-sm uppercase;
+}
+
+table {
+  @apply my-6;
+}
+table tr> td:first-of-type {
+  @apply align-bottom font-semibold text-sm uppercase w-32;
 }
 
 
