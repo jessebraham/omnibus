@@ -3,21 +3,29 @@
 //
 
 document.querySelectorAll(".mark-as-read").forEach(elem => {
-  const bookId = elem.getAttribute("data-book-id");
-
   elem.addEventListener("click", e => {
-    fetch(`/add/?book_id=${bookId}`)
-      .then(resp => resp.json())
-      .then(json => {
-        if (json.success) {
-          elem.textContent = "Read";
-        } else {
-          console.error(json.error);
-        }
-      })
-      .catch(error => console.error(error));
+    const bookId = elem.getAttribute("data-book-id");
+    if (elem.textContent.toLowerCase().trim() === "read") {
+      updateReadStatus("remove", bookId, elem);
+    } else {
+      addBook(elem, bookId);
+      updateReadStatus("add", bookId, elem);
+    }
   });
 });
+
+const updateReadStatus = (action, bookId, elem) => {
+  fetch(`/${action}/?book_id=${bookId}`)
+    .then(resp => resp.json())
+    .then(json => {
+      if (json.success) {
+        elem.textContent = action === "add" ? "Read" : "Mark as read";
+      } else {
+        console.error(json.error);
+      }
+    })
+    .catch(error => console.error(error));
+};
 
 //
 // Pagination

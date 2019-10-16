@@ -33,11 +33,13 @@
       </p>
     </div>
     <div class="flex items-center ml-6">
-      {% if work["best_book"]["id"] in read %}
-        <span data-book-id="{{ work['best_book']['id'] }}" class="mark-as-unread cursor-pointer text-gray-700 text-sm hover:underline uppercase">Read</span>
-      {% else %}
-        <span data-book-id="{{ work['best_book']['id'] }}" class="mark-as-read cursor-pointer text-gray-700 text-sm hover:underline uppercase">Mark as read</span>
-      {% endif %}
+      <span data-book-id="{{ work['best_book']['id'] }}" class="mark-as-read cursor-pointer text-gray-700 text-sm hover:underline uppercase">
+        {% if work["best_book"]["id"] in read %}
+          Read
+        {% else %}
+          Mark as read
+        {% endif %}
+      </span>
     </div>
   </div>
 {%- endmacro %}

@@ -58,7 +58,7 @@ def series(request, series_id):
 
 
 def book(request, book_id):
-    book = Book.objects.get(id__exact=book_id)
+    book = Book.objects.get(id=book_id)
     if not book:
         return redirect("index")
 
@@ -81,6 +81,20 @@ def add(request):
     book.author.save()
 
     book.save()
+
+    return JsonResponse({"success": True, "error": None})
+
+
+def remove(request):
+    book_id = request.GET.get("book_id")
+    if not book_id:
+        return JsonResponse({"success": False, "error": "no book_id provided"})
+
+    book = Book.objects.get(id=book_id)
+    if not book:
+        return JsonResponse({"success": False, "error": "invalid book_id provided"})
+
+    book.delete()
 
     return JsonResponse({"success": True, "error": None})
 
