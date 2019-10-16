@@ -10,7 +10,7 @@
 {% block content %}
 <div class="card">
   <h1 class="text-lg uppercase">{{ series.title }}</h1>
-  {% if books[0].publisher %}
+  {% if books[0].series.id != 0 and books[0].publisher %}
     <h2 class="text-gray-700 uppercase">{{ books[0].publisher }}</h2>
   {% endif %}
   <div class="my-6">{{ series.description.replace("\n", "<br />")|safe }}</div>

@@ -51,11 +51,11 @@
    #}
   <div class="paginator">
     {% if results["results_start"]|int > 1 %}
-      <span class="prev-page">Prev</span>
+      <span id="prev-page">Prev</span>
     {% endif %}
-    <p>Page {{ page }}</p>
+    <p id="page-number">Page {{ page }}</p>
     {% if results["results_end"]|int < results["total_results"]|int %}
-      <span class="next-page">Next</span>
+      <span id="next-page">Next</span>
     {% endif %}
   </div>
 {%- endmacro %}

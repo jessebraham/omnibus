@@ -8,7 +8,6 @@ document.querySelectorAll(".mark-as-read").forEach(elem => {
     if (elem.textContent.toLowerCase().trim() === "read") {
       updateReadStatus("remove", bookId, elem);
     } else {
-      addBook(elem, bookId);
       updateReadStatus("add", bookId, elem);
     }
   });
@@ -31,12 +30,12 @@ const updateReadStatus = (action, bookId, elem) => {
 // Pagination
 //
 
-const prev = document.querySelector(".prev-page");
+const prev = document.querySelector("#prev-page");
 if (prev) {
   prev.addEventListener("click", e => changePage(-1));
 }
 
-const next = document.querySelector(".next-page");
+const next = document.querySelector("#next-page");
 if (next) {
   next.addEventListener("click", e => changePage(+1));
 }

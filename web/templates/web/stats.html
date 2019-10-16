@@ -7,11 +7,12 @@ Stats - Omnibus
 
 
 {% block content %}
-<p class="mb-12">
+<div class="card">
+  <p class="mb-12 mt-6">
   <a href="{{ url('sync') }}">Sync</a> with Goodreads account (this may take awhile)
 </p>
 
-<table>
+  <table class="wider">
   <tr>
     <td>Authors</td>
     <td>{{ stats["total_authors"] }}</td>
@@ -26,7 +27,7 @@ Stats - Omnibus
   </tr>
 </table>
 
-<table>
+  <table class="wider">
   <tr>
     <td>Top Author</td>
     <td>{{ stats["top_author"] }}</td>
@@ -37,7 +38,7 @@ Stats - Omnibus
   </tr>
 </table>
 
-<table>
+  <table class="wider">
   <tr>
     <td>Longest Series</td>
     <td>{{ stats["longest_series"] }}</td>

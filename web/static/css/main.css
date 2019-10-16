@@ -20,6 +20,9 @@ table {
   table tr> td:first-of-type {
     @apply align-bottom font-semibold text-sm uppercase w-32;
   }
+  table.wider tr> td:first-of-type {
+    @apply w-64;
+  }
 
 
 /* Component styles */
