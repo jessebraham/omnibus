@@ -1,5 +1,5 @@
 {% extends "web/partials/base.html" %}
-{% from "web/macros/images.jinja" import thumbnail %}
+{% from "web/macros/components.jinja" import thumbnail %}
 
 
 {% block title %}
@@ -8,7 +8,7 @@
 
 
 {% block content %}
-<div class="border border-gray-400 bg-white px-6 py-3 rounded">
+<div class="card">
   <h1 class="text-lg uppercase">{{ series.title }}</h1>
   {% if books[0].publisher %}
     <h2 class="text-gray-700 uppercase">{{ books[0].publisher }}</h2>

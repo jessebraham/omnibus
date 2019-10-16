@@ -10,27 +10,48 @@
 a {
   @apply text-sm uppercase;
 }
+  a:hover {
+    @apply underline;
+  }
 
 table {
   @apply my-6;
 }
-table tr> td:first-of-type {
-  @apply align-bottom font-semibold text-sm uppercase w-32;
-}
+  table tr> td:first-of-type {
+    @apply align-bottom font-semibold text-sm uppercase w-32;
+  }
 
 
 /* Component styles */
 
+.card {
+  @apply border border-gray-400 bg-white px-6 py-3;
+}
+
 .thumbnail {
   @apply break-words mb-1 mr-1;
-}
-.thumbnail,
-.thumbnail img {
   width: 98px;
 }
-.thumbnail img {
-  height: 152px;
+  .thumbnail img {
+    height: 152px;
+    width: 98px;
+  }
+  .thumbnail figcaption {
+    @apply p-1 text-xs;
+  }
+
+.paginator {
+  @apply flex items-center justify-center mt-12;
 }
-.thumbnail figcaption {
-  @apply p-1 text-xs;
-}
+  .paginator p {
+    @apply px-6 text-center text-sm uppercase;
+  }
+  .paginator span {
+    @apply cursor-pointer text-gray-700 text-sm uppercase w-20;
+  }
+    .paginator span:hover {
+      @apply underline;
+    }
+    .paginator span:last-of-type {
+      @apply text-right;
+    }
