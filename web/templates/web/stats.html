@@ -9,43 +9,61 @@ Stats - Omnibus
 {% block content %}
 <div class="card">
   <p class="mb-12 mt-6">
-  <a href="{{ url('sync') }}">Sync</a> with Goodreads account (this may take awhile)
-</p>
+    <a href="{{ url('sync') }}">Sync</a> with Goodreads account (this may take awhile)
+  </p>
 
   <table class="wider">
-  <tr>
-    <td>Authors</td>
-    <td>{{ stats["total_authors"] }}</td>
-  </tr>
-  <tr>
-    <td>Series</td>
-    <td>{{ stats["total_series"] }}</td>
-  </tr>
-  <tr>
-    <td>Books</td>
-    <td>{{ stats["total_books"] }}</td>
-  </tr>
-</table>
+    <tr>
+      <td>Authors</td>
+      <td>{{ stats["totals"]["authors"] }}</td>
+    </tr>
+    <tr>
+      <td>Series</td>
+      <td>{{ stats["totals"]["series"] }}</td>
+    </tr>
+    <tr>
+      <td>Books</td>
+      <td>{{ stats["totals"]["books"] }}</td>
+    </tr>
+    <tr>
+      <td>Pages</td>
+      <td>{{ stats["totals"]["pages"] }}</td>
+    </tr>
+  </table>
 
   <table class="wider">
-  <tr>
-    <td>Top Author</td>
-    <td>{{ stats["top_author"] }}</td>
-  </tr>
-  <tr>
-    <td>Books</td>
-    <td>{{ stats["top_author_count"] }}</td>
-  </tr>
-</table>
+    <tr>
+      <td>Top Author</td>
+      <td>{{ stats["authors"]["top"] }}</td>
+    </tr>
+    <tr>
+      <td>Books</td>
+      <td>{{ stats["authors"]["count"] }}</td>
+    </tr>
+    <tr>
+      <td>Pages</td>
+      <td>{{ stats["authors"]["pages"] }}</td>
+    </tr>
+  </table>
 
   <table class="wider">
-  <tr>
-    <td>Longest Series</td>
-    <td>{{ stats["longest_series"] }}</td>
-  </tr>
-  <tr>
-    <td>Pages</td>
-    <td>{{ stats["longest_series_num_pages"] }}</td>
-  </tr>
-</table>
+    <tr>
+      <td>Longest Series</td>
+      <td>{{ stats["series"]["longest"] }}</td>
+    </tr>
+    <tr>
+      <td>Pages</td>
+      <td>{{ stats["series"]["pages"] }}</td>
+    </tr>
+  </table>
+
+  <table class="wider">
+    {% for (publisher, count) in stats["publishers"].items() %}
+      <tr>
+        <td>{{ publisher }}</td>
+        <td>{{ count }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+</div>
 {% endblock %}

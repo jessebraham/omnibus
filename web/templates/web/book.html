@@ -15,8 +15,16 @@
 
   <table>
     <tr>
-      <td>Author</td>
-      <td>{{ book.author.name }}</td>
+      <td>Authors</td>
+      <td>
+      {% for author in book.authors.all() %}
+      {{ author.name }}
+      {% if author.role %}
+      <span class="text-sm">({{ author.role }})</span>
+      {% endif %}
+      <br />
+      {% endfor %}
+      </td>
     </tr>
     {% if book.series %}
     <tr>
@@ -34,7 +42,7 @@
     </tr>
     <tr>
       <td>Rating</td>
-      <td>{{ book.average_rating }} <span class="text-xs">({{ book.ratings_count }})</span></td>
+      <td>{{ book.average_rating }} <span class="text-sm">({{ book.ratings_count }})</span></td>
     </tr>
   </table>
 

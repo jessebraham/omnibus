@@ -3,14 +3,18 @@ from django.shortcuts import redirect, render
 
 from goodreads.client import GoodreadsClient
 from goodreads.models import Book
-from goodreads.schemas import AuthorSchema, BookSchema
+from goodreads.schemas import BookSchema
 
 from .helpers import (
     books_read_by_user,
     collection_stats,
+    create_book,
     sort_books_by_series,
-    try_get_series,
 )
+
+
+# ----------------------------------------------------------------------------
+# Template Views
 
 
 def index(request):
@@ -41,13 +45,7 @@ def stats(request):
 
 
 def series(request, series_id):
-    # Retrieve a list of all Book objects with a Series matching the provided
-    # series ID, ordered by their titles.
-    books = Book.objects.filter(series__id__exact=series_id).order_by("title")
-
-    # If any Books are returned, they all have the same Series; store the
-    # Series of the first result. Otherwise, the specified Series does not
-    # exist to simply redirect back to the Index.
+    books = Book.objects.filter(series__id=series_id)
     series = books[0].series if books else None
     if series is None:
         return redirect("index")
@@ -65,22 +63,16 @@ def book(request, book_id):
     return render(request, "web/book.html", context={"book": book})
 
 
+# ----------------------------------------------------------------------------
+# AJAX Views
+
+
 def add(request):
     book_id = request.GET.get("book_id")
     if not book_id:
         return JsonResponse({"success": False, "error": "no book_id provided"})
 
-    resp = GoodreadsClient.book(book_id)
-    book = BookSchema().load(resp)
-
-    book.series = try_get_series(resp["work"][0]["id"])
-    if book.series is not None:
-        book.series.save()
-
-    book.author = AuthorSchema().load(resp["authors"]["author"][0])
-    book.author.save()
-
-    book.save()
+    create_book(book_id)
 
     return JsonResponse({"success": True, "error": None})
 
@@ -92,7 +84,9 @@ def remove(request):
 
     book = Book.objects.get(id=book_id)
     if not book:
-        return JsonResponse({"success": False, "error": "invalid book_id provided"})
+        return JsonResponse(
+            {"success": False, "error": "invalid book_id provided"}
+        )
 
     book.delete()
 
@@ -100,18 +94,13 @@ def remove(request):
 
 
 def sync(request):
-    author_schema = AuthorSchema()
-    book_schema = BookSchema()
+    # Create a set of all read Book IDs, so that we can quickly determine
+    # whether or not the Book in question needs to be synced.
+    read_book_ids = {b.id for b in Book.objects.all()}
 
     for result in books_read_by_user():
-        book = book_schema.load(result["book"])
-        book.author = author_schema.load(result["book"]["authors"]["author"])
-        book.series = try_get_series(result["book"]["work"][0]["id"])
-
-        if book.series is not None:
-            book.series.save()
-
-        book.author.save()
-        book.save()
+        book = BookSchema().load(result["book"])
+        if book.id not in read_book_ids:
+            create_book(book.id)
 
     return redirect("stats")

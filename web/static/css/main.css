@@ -17,8 +17,11 @@ a {
 table {
   @apply my-6;
 }
+  table tr> td {
+    @apply p-0 pb-1;
+  }
   table tr> td:first-of-type {
-    @apply align-bottom font-semibold text-sm uppercase w-32;
+    @apply font-semibold text-sm uppercase w-32;
   }
   table.wider tr> td:first-of-type {
     @apply w-64;
