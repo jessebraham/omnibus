@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
 from goodreads.client import GoodreadsClient
-from goodreads.models import Book
+from goodreads.models import Book, Series
 from goodreads.schemas import BookSchema
 
 from .helpers import (
@@ -55,12 +55,44 @@ def series(request, series_id):
     )
 
 
+def edit_series(request, series_id):
+    series = Series.objects.get(id=series_id)
+    if not series:
+        return redirect("index")
+
+    if request.method == "POST":
+        series.title = request.POST.get("title", series.title)
+        series.save()
+
+    return render(request, "web/edit_series.html", context={"series": series})
+
+
 def book(request, book_id):
     book = Book.objects.get(id=book_id)
     if not book:
         return redirect("index")
 
     return render(request, "web/book.html", context={"book": book})
+
+
+def edit_book(request, book_id):
+    book = Book.objects.get(id=book_id)
+    if not book:
+        return redirect("index")
+
+    if request.method == "POST":
+        book.title = request.POST.get("title", book.title)
+        book.publisher = request.POST.get("publisher", book.publisher)
+        book.series = Series.objects.get(
+            id=request.POST.get("series", book.series.id)
+        )
+        book.save()
+
+    return render(
+        request,
+        "web/edit_book.html",
+        context={"book": book, "series": Series.objects.all()},
+    )
 
 
 # ----------------------------------------------------------------------------

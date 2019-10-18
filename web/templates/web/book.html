@@ -8,7 +8,11 @@
 
 {% block content %}
 <div class="card">
-  <h1 class="text-lg uppercase">{{ book.title }}</h1>
+  <div class="flex items-center">
+    <h1 class="text-lg uppercase">{{ book.title }}</h1>
+    <a href="{{ url('edit_book', args=[book.id]) }}" class="ml-6 text-xs">Edit</a>
+  </div>
+
   {% if book.publisher %}
     <h2 class="text-gray-700 uppercase">{{ book.publisher }}</h2>
   {% endif %}

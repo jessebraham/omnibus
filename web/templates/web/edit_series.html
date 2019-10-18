@@ -1,0 +1,22 @@
+{% extends "web/partials/base.html" %}
+{% from "web/macros/forms.jinja" import text_field, submit_field %}
+
+
+{% block title %}
+{{ series.title }} - Omnibus
+{% endblock %}
+
+
+{% block content %}
+<div class="card">
+  <h1 class="text-lg uppercase">Edit Series</h1>
+  <h2 class="mb-12 text-gray-700 uppercase">{{ series.title }}</h2>
+
+  <form method="post" action="{{ url('edit_series', args=[series.id]) }}">
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+
+    {{ text_field("Title", series.title) }}
+    {{ submit_field() }}
+  </form>
+</div>
+{% endblock %}

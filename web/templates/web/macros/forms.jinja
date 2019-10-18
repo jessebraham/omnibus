@@ -1,0 +1,13 @@
+{% macro text_field(title, value) -%}
+<fieldset class="flex items-center mb-2">
+  <p class="w-1/4">{{ title }}</p>
+  <input name="{{ title|lower }}" value="{{ value }}" class="border border-gray-700 flex-1 px-2 py-1" />
+</fieldset>
+{%- endmacro %}
+
+{% macro submit_field() -%}
+<fieldset class="flex items-center mb-2">
+  <p class="w-1/4"></p>
+  <input type="submit" value="Update" class="cursor-pointer mt-6 hover:underline" />
+</fieldset>
+{%- endmacro %}

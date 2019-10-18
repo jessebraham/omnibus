@@ -1,0 +1,38 @@
+{% extends "web/partials/base.html" %}
+{% from "web/macros/forms.jinja" import text_field, submit_field %}
+
+
+{% block title %}
+{{ book.title }} - Omnibus
+{% endblock %}
+
+
+{% block content %}
+<div class="card">
+  <h1 class="text-lg uppercase">Edit Book</h1>
+  <h2 class="mb-12 text-gray-700 uppercase">{{ book.title }}</h2>
+
+  <form method="post" action="{{ url('edit_book', args=[book.id]) }}">
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+
+    {{ text_field("Title", book.title) }}
+    {{ text_field("Publisher", book.publisher) }}
+
+    <fieldset class="flex items-center mb-2">
+      <p class="w-1/4">Series</p>
+      <select name="series" class="border border-gray-700 flex-1 px-2 py-1">
+        {% for s in series %}
+          {% if s.id == book.series.id %}
+            <option value="{{ s.id }}" selected>{{ s.title }}</option>
+          {% else %}
+            <option value="{{ s.id }}">{{ s.title }}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+    </fieldset>
+
+    {{ submit_field() }}
+    
+  </form>
+</div>
+{% endblock %}
