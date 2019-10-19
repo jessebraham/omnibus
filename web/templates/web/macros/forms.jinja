@@ -1,13 +1,20 @@
-{% macro text_field(title, value) -%}
-<fieldset class="flex items-center mb-2">
-  <p class="w-1/4">{{ title }}</p>
-  <input name="{{ title|lower }}" value="{{ value }}" class="border border-gray-700 flex-1 px-2 py-1" />
-</fieldset>
+{% macro text_field(title, placeholder="", value="") -%}
+  {#
+   # Create a fieldset containing a title and text input with the specified
+   # value.
+   #}
+  <fieldset>
+    <p>{{ title }}</p>
+    <input type="text" name="{{ title.replace(' ', '_')|lower }}" placeholder="{{ placeholder }}" value="{{ value }}" />
+  </fieldset>
 {%- endmacro %}
 
-{% macro submit_field() -%}
-<fieldset class="flex items-center mb-2">
-  <p class="w-1/4"></p>
-  <input type="submit" value="Update" class="cursor-pointer mt-6 hover:underline" />
-</fieldset>
+{% macro submit_field(value="Update") -%}
+  {#
+   # Create a fieldset containing a submit input.
+   #}
+  <fieldset>
+    <p><!-- spacer --></p>
+    <input type="submit" value="{{ value }}" />
+  </fieldset>
 {%- endmacro %}

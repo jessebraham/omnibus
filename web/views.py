@@ -44,6 +44,18 @@ def stats(request):
     )
 
 
+def manage(request):
+    if request.method == "POST":
+        series_id = request.POST.get("series_id")
+        title = request.POST.get("title")
+
+        if series_id and title:
+            series = Series(id=series_id, title=title, description="")
+            series.save()
+
+    return render(request, "web/manage.html")
+
+
 def series(request, series_id):
     books = Book.objects.filter(series__id=series_id)
     series = books[0].series if books else None
@@ -63,6 +75,7 @@ def edit_series(request, series_id):
     if request.method == "POST":
         series.title = request.POST.get("title", series.title)
         series.save()
+        return redirect("series", series_id=series.id)
 
     return render(request, "web/edit_series.html", context={"series": series})
 
@@ -87,6 +100,7 @@ def edit_book(request, book_id):
             id=request.POST.get("series", book.series.id)
         )
         book.save()
+        return redirect("book", book_id=book.id)
 
     return render(
         request,
@@ -135,4 +149,4 @@ def sync(request):
         if book.id not in read_book_ids:
             create_book(book.id)
 
-    return redirect("stats")
+    return redirect("index")
