@@ -1,7 +1,8 @@
 {% macro nav_item(view_name, title) -%}
   {#
    # Create a nav item, setting the active state of the item corresponding
-   # to the current view.
+   # to the current view. Must be imported into templates with context in
+   # order to access the view's name.
    #}
   {% if request.resolver_match.view_name == view_name %}
     <a href="#" class="ml-6 hover:no-underline text-gray-500">{{ title }}</a>
@@ -15,9 +16,9 @@
    # Display a link to the Book details page, containing a small thumbnail of the
    # cover as well as the Book's title.
    #}
-  <a href="{{ url('book', args=[book.id]) }}" title="{{ book.title }}">
+  <a href="{{ url('book', args=[book.id]) }}">
     <figure class="thumbnail">
-        <img src="{{ book.image_url }}" />
+        <img src="{{ book.image_url }}" alt="{{ book.title }}" />
         <figcaption>{{ book.title }}</figcaption>
     </figure>
   </a>

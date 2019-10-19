@@ -9,17 +9,15 @@ Manage - Omnibus
 
 {% block content %}
 <div class="card">
-  <h1 class="mb-12">Manage</h1>
-
-  <h2 class="mb-6">Sync with Goodreads</h2>
+  <h1 class="my-6">Sync with Goodreads</h1>
   <div class="mb-12">
     <p class="mb-6">Syncing with your Goodreads account can potentially take multiple minutes if you have a large collection; please be patient. You will be automatically redirected when the operation completes.</p>
     <a href="{{ url('sync') }}">Sync</a>
   </div>
 
-  <h2 class="mb-6">Create Series</h2>
-  <div>
-    <p class="mb-12">Manually create a series. Goodreads doesn't have the best data for this.</p>
+  <h1 class="mb-6">Create Series</h1>
+  <div class="mb-6">
+    <p class="mb-12">Manually create a series. Goodreads doesn't always have the best data for this.</p>
     <form method="post" action="">
       <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
 

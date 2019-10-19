@@ -3,20 +3,21 @@
 
 
 {% block content %}
-  <div class="flex flex-col">
-    {% for (series_title, series_id) in series|sort %}
-      <div class="card flex flex-col mb-3">
-        <div class="mb-6">
-          <a href="{{ url('series', args=[series_id]) }}" class="text-lg">{{ series_title }}</a>
-        </div>
-        <div class="flex flex-wrap">
-          {% for book in series[(series_title, series_id)] %}
-            {{ thumbnail(book) }}
-          {% endfor %}
-        </div>
+<div class="flex flex-col">
+  {% for (series_title, series_id) in series|sort %}
+    <div class="card flex flex-col mb-3">
+      <div class="flex items-center mb-6">
+        <a href="{{ url('series', args=[series_id]) }}" class="text-lg uppercase">{{ series_title }}</a>
+        <a href="{{ url('edit_series', args=[series_id]) }}" class="ml-6 text-xs">Edit</a>
       </div>
-    {% else %}
-      <p>There's nothing here, yet.</p>
-    {% endfor %}
-  </div>
+      <div class="flex flex-wrap">
+        {% for book in series[(series_title, series_id)] %}
+          {{ thumbnail(book) }}
+        {% endfor %}
+      </div>
+    </div>
+  {% else %}
+    <p>There's nothing here, yet.</p>
+  {% endfor %}
+</div>
 {% endblock %}

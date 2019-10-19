@@ -9,12 +9,12 @@
 {% block content %}
 <div class="card">
   <div class="flex items-center">
-    <h1 class="text-lg uppercase">{{ book.title }}</h1>
+    <h1>{{ book.title }}</h1>
     <a href="{{ url('edit_book', args=[book.id]) }}" class="ml-6 text-xs">Edit</a>
   </div>
 
   {% if book.publisher %}
-    <h2 class="text-gray-700 uppercase">{{ book.publisher }}</h2>
+    <h2>{{ book.publisher }}</h2>
   {% endif %}
 
   <table>
@@ -22,11 +22,11 @@
       <td>Authors</td>
       <td>
       {% for author in book.authors.all() %}
-      {{ author.name }}
-      {% if author.role %}
-      <span class="text-sm">({{ author.role }})</span>
-      {% endif %}
-      <br />
+        {{ author.name }}
+        {% if author.role %}
+          <span class="text-sm">({{ author.role }})</span>
+        {% endif %}
+        <br />
       {% endfor %}
       </td>
     </tr>
@@ -51,7 +51,7 @@
   </table>
 
   {% if book.description %}
-    <p class="my-12">{{ book.description.replace("\n", "<br />")|safe }}</p>
+    <p class="mb-12 mt-6">{{ book.description.replace("\n", "<br />")|safe }}</p>
   {% endif %}
 
   <img src="{{ book.image_url }}" title="{{ book.title }}" />

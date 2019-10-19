@@ -15,11 +15,11 @@
    # Display a single search result, showing its cover thumbnail, title, author,
    # and rating. Additionally have a link to mark a result as read.
    #}
-  <div class="border border-gray-500 bg-white flex justify-between mb-3 px-6 py-3">
-    <figure class="mr-6">
+  <div class="search-result-item">
+    <figure>
       <img src="{{ work['best_book']['image_url'] }}" />
     </figure>
-    <div class="flex flex-col justify-center flex-1 pr-6">
+    <div class="flex flex-col justify-center flex-1">
       <p class="flex items-center text-lg uppercase">
         {{ work["best_book"]["title"] }}
         {% if work["original_publication_year"] %}
@@ -32,14 +32,14 @@
         <span class="ml-2 text-gray-700 text-sm">({{ work["ratings_count"] }})</span>
       </p>
     </div>
-    <div class="flex items-center ml-6">
-      <span data-book-id="{{ work['best_book']['id'] }}" class="mark-as-read cursor-pointer text-gray-700 text-sm hover:underline uppercase">
+    <div class="flex items-center ml-12">
+      <a data-book-id="{{ work['best_book']['id'] }}" class="mark-as-read text-gray-700">
         {% if work["best_book"]["id"] in read %}
           Read
         {% else %}
           Mark as read
         {% endif %}
-      </span>
+      </a>
     </div>
   </div>
 {%- endmacro %}

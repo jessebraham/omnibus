@@ -12,7 +12,7 @@ Search - Omnibus
 
 <form method="get" action="{{ url('search') }}" class="mb-12">
   <input id="page-number" name="page" type="hidden" value="{{ page if page else 1 }}" />
-  <input name="query" placeholder="Search" class="border border-gray-700 px-2 py-1 w-full" autofocus />
+  <input type="text" name="query" placeholder="Search" autofocus />
 </form>
 
 {% if results %}

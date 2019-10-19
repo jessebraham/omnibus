@@ -7,12 +7,18 @@
 
 /* Base Element styles */
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2 {
   @apply uppercase;
+}
+h1 {
+  @apply text-lg;
+}
+h2 {
+  @apply text-gray-700;
 }
 
 a {
-  @apply text-sm uppercase;
+  @apply cursor-pointer text-sm uppercase;
 }
   a:hover {
     @apply underline;
@@ -58,9 +64,6 @@ input[type=submit] {
 .card {
   @apply border border-gray-400 bg-white px-6 py-3;
 }
-  .card h1 {
-    @apply text-lg;
-  }
 
 .thumbnail {
   @apply break-words mb-1 mr-1;
@@ -72,6 +75,13 @@ input[type=submit] {
   }
   .thumbnail figcaption {
     @apply p-1 text-xs;
+  }
+
+.search-result-item {
+  @apply border border-gray-500 bg-white flex justify-between mb-3 px-6 py-3;
+}
+  .search-result-item> figure {
+    @apply mr-6;
   }
 
 .paginator {

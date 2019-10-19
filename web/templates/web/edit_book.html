@@ -9,14 +9,14 @@
 
 {% block content %}
 <div class="card">
-  <h1 class="text-lg uppercase">Edit Book</h1>
-  <h2 class="mb-12 text-gray-700 uppercase">{{ book.title }}</h2>
+  <h1>Edit Book</h1>
+  <h2 class="mb-12">{{ book.title }}</h2>
 
   <form method="post" action="{{ url('edit_book', args=[book.id]) }}">
     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
 
-    {{ text_field("Title", book.title) }}
-    {{ text_field("Publisher", book.publisher) }}
+    {{ text_field("Title", value=book.title) }}
+    {{ text_field("Publisher", value=book.publisher) }}
 
     <fieldset class="flex items-center mb-2">
       <p class="w-1/4">Series</p>
@@ -31,7 +31,7 @@
       </select>
     </fieldset>
 
-    {{ submit_field() }}
+    {{ submit_field("Update") }}
     
   </form>
 </div>
