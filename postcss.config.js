@@ -28,12 +28,16 @@ module.exports = ctx => ({
 
     // Production mode only
     PRODUCTION && purgecss({
-      content: ["./web/templates/**/*.html", "./web/static/js/**/*.js"],
+      content: [
+        "./web/templates/**/*.html",
+        "./web/templates/**/*.jinja",
+        "./web/static/js/**/*.js",
+      ],
       css: ["./web/static/css/**/*.css"],
       extractors: [
         {
           extractor: TailwindExtractor,
-          extensions: ["html", "css", "js"],
+          extensions: ["html", "css", "js", "jinja"],
         },
       ],
       whitelist: [],
