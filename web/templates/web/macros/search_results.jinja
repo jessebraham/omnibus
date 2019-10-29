@@ -1,3 +1,5 @@
+{% from "web/macros/components.jinja" import loading %}
+
 {% macro results_count(data) -%}
   {#
    # Indicate the number of displayed and total number of results for a
@@ -40,7 +42,7 @@
           Mark as read
         {% endif %}
       </a>
-      {% include "web/partials/_loading.html" %}
+      {{ loading() }}
     </div>
   </div>
 {%- endmacro %}

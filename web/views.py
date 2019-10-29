@@ -50,10 +50,14 @@ def manage(request):
     if request.method == "POST":
         series_id = request.POST.get("series_id")
         title = request.POST.get("title")
+        publisher_name = request.POST.get("name")
 
-        if series_id and title:
+        if series_id is not None and title is not None:
             series = Series(id=series_id, title=title, description="")
             series.save()
+        elif publisher_name is not None:
+            publisher = Publisher(name=publisher_name)
+            publisher.save()
 
     return render(request, "web/manage.html")
 
