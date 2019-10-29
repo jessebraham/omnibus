@@ -23,3 +23,22 @@
     </figure>
   </a>
 {%- endmacro %}
+
+{% macro series_summary(books) -%}
+  {#
+   # ???
+   #}
+  {% set series = books[0].series %}
+
+  <div class="card flex flex-col mb-3">
+    <div class="flex items-center mb-6">
+      <a href="{{ url('series', args=[series.id]) }}" class="text-lg uppercase">{{ series.title }}</a>
+      <a href="{{ url('edit_series', args=[series.id]) }}" class="ml-6 text-xs">Edit</a>
+    </div>
+    <div class="flex flex-wrap">
+      {% for book in books %}
+        {{ thumbnail(book) }}
+      {% endfor %}
+    </div>
+  </div>
+{%- endmacro %}

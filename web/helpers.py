@@ -3,14 +3,14 @@ from collections import defaultdict
 from django.conf import settings
 
 from goodreads.client import GoodreadsClient
-from goodreads.models import Author, Book, Series
+from goodreads.models import Author, Book, Publisher, Series
 from goodreads.schemas import AuthorSchema, BookSchema, SeriesSchema
 
 
-def sort_books_by_series():
+def categorize_by_series(book_list):
     books = defaultdict(list)
 
-    for book in Book.objects.all():
+    for book in book_list:
         if book.series is not None:
             # Use a Tuple consisting of the series title and id as the key,
             # as both are required in the view.
@@ -150,4 +150,10 @@ def create_book(book_id):
     book.series = try_get_series(resp["work"][0]["id"])
     book.series.save()
 
+    resp_publisher = resp["publisher"]
+    if resp_publisher:
+        (pub, created) = Publisher.objects.get_or_create(name=resp_publisher)
+        book.publisher = pub
+
     book.save()
+    print(book)

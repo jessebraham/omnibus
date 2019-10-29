@@ -14,7 +14,7 @@
   </div>
 
   {% if book.publisher %}
-    <h2>{{ book.publisher }}</h2>
+    <a href="{{ url('publisher', args=[book.publisher.id]) }}" class="text-gray-700 text-base uppercase">{{ book.publisher.name }}</a>
   {% endif %}
 
   <table>

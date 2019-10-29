@@ -16,7 +16,19 @@
     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
 
     {{ text_field("Title", value=book.title) }}
-    {{ text_field("Publisher", value=book.publisher) }}
+
+    <fieldset class="flex items-center mb-2">
+      <p class="w-1/4">Publisher</p>
+      <select name="publisher" class="border border-gray-700 flex-1 px-2 py-1">
+        {% for p in publishers %}
+          {% if p.id == book.publisher.id %}
+            <option value="{{ p.id }}" selected>{{ p.name }}</option>
+          {% else %}
+            <option value="{{ p.id }}">{{ p.name }}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+    </fieldset>
 
     <fieldset class="flex items-center mb-2">
       <p class="w-1/4">Series</p>

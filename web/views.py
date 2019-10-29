@@ -2,14 +2,14 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
 from goodreads.client import GoodreadsClient
-from goodreads.models import Book, Series
+from goodreads.models import Book, Publisher, Series
 from goodreads.schemas import BookSchema
 
 from .helpers import (
     books_read_by_user,
+    categorize_by_series,
     collection_stats,
     create_book,
-    sort_books_by_series,
 )
 
 
@@ -19,7 +19,9 @@ from .helpers import (
 
 def index(request):
     return render(
-        request, "web/index.html", context={"series": sort_books_by_series()}
+        request,
+        "web/index.html",
+        context={"books": categorize_by_series(Book.objects.all())},
     )
 
 
@@ -105,7 +107,26 @@ def edit_book(request, book_id):
     return render(
         request,
         "web/edit_book.html",
-        context={"book": book, "series": Series.objects.all()},
+        context={
+            "book": book,
+            "publishers": Publisher.objects.all(),
+            "series": Series.objects.all(),
+        },
+    )
+
+
+def publisher(request, publisher_id):
+    books = Book.objects.filter(publisher__id=publisher_id)
+    if not books:
+        return redirect("index")
+
+    return render(
+        request,
+        "web/publisher.html",
+        context={
+            "books": categorize_by_series(books),
+            "publisher": books[0].publisher,
+        },
     )
 
 

@@ -1,8 +1,14 @@
 {% extends "web/partials/base.html" %}
-{% from "web/macros/components.jinja" import series_summary %}
+{% from "web/macros/components.jinja" import series_summary, thumbnail %}
+
+
+{% block title %}
+{{ publisher.name }} - Omnibus
+{% endblock %}
 
 
 {% block content %}
+<p class="font-thin mb-8 text-3xl tracking-wide uppercase">{{ publisher.name }}</p>
 <div class="flex flex-col">
   {% for (series_title, series_id) in books|sort %}
     {{ series_summary(books[(series_title, series_id)]) }}
