@@ -3,9 +3,20 @@ import re
 from django.db import models
 
 
+class Publisher(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    name = models.CharField(max_length=64, unique=True)
+
+    def __repr__(self):
+        return f"<Publisher(id={self.id}, name={self.name})>"
+
+    def __str__(self):
+        return f"{self.name} (#{self.id})"
+
+
 class Author(models.Model):
     id = models.BigIntegerField(primary_key=True)
-    name = models.CharField(max_length=64)
+    name = models.CharField(max_length=64, unique=True)
     role = models.CharField(max_length=64, null=True)
     average_rating = models.FloatField(null=True)
     ratings_count = models.IntegerField(null=True)
@@ -14,7 +25,7 @@ class Author(models.Model):
         return f"<Author(id={self.id}, name={self.name})>"
 
     def __str__(self):
-        return f"{self.name} ({self.id})"
+        return f"{self.name} (#{self.id})"
 
 
 class Series(models.Model):
@@ -22,15 +33,15 @@ class Series(models.Model):
         verbose_name_plural = "Series"
 
     id = models.BigIntegerField(primary_key=True)
-    title = models.CharField(max_length=255)
-    description = models.TextField()
+    title = models.CharField(max_length=255, unique=True)
+    description = models.TextField(null=True)
     primary_work_count = models.IntegerField(null=True)
 
     def __repr__(self):
         return f"<Series(id={self.id}, title={self.title})>"
 
     def __str__(self):
-        return f"{self.title} ({self.id})"
+        return f"{self.title} (#{self.id})"
 
 
 class Book(models.Model):
@@ -39,15 +50,15 @@ class Book(models.Model):
 
     id = models.BigIntegerField(primary_key=True)
     isbn = models.CharField(max_length=64, null=True)
-    # author = models.ForeignKey(Author, on_delete=models.CASCADE)
     authors = models.ManyToManyField(Author)
     series = models.ForeignKey(Series, on_delete=models.CASCADE, null=True)
+    publisher = models.ForeignKey(
+        Publisher, on_delete=models.CASCADE, null=True
+    )
     title = models.CharField(max_length=255)
     description = models.TextField(null=True)
     image_url = models.URLField()
-    small_image_url = models.URLField(null=True)
     num_pages = models.IntegerField(null=True)
-    publisher = models.CharField(max_length=64, null=True)
     publication_year = models.IntegerField(null=True)
     publication_month = models.IntegerField(null=True)
     publication_day = models.IntegerField(null=True)
@@ -58,10 +69,10 @@ class Book(models.Model):
     @classmethod
     def create(cls, data):
         book = cls(**data)
-        book._set_seq_number()
+        book._set_sequence_number()
         return book
 
-    def _set_seq_number(self):
+    def _set_sequence_number(self):
         re_seq_number = r"(vol|book|#)[^\d]*(\d+).*"
         m = re.search(re_seq_number, self.title, re.IGNORECASE)
 
@@ -77,4 +88,4 @@ class Book(models.Model):
         return f"<Book(id={self.id}, title={self.title})>"
 
     def __str__(self):
-        return f"{self.title} ({self.id})"
+        return f"{self.title} (#{self.id})"
