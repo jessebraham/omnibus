@@ -99,3 +99,35 @@ input[type=submit] {
     .paginator span:last-of-type {
       @apply text-right;
     }
+
+
+/* Loading spinner */
+
+.lds-ring {
+  @apply h-4 ml-4 relative w-4;
+}
+  .lds-ring div {
+    @apply absolute block border-2 border-black h-4 w-4;
+    animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: #000 transparent transparent transparent;
+    border-radius: 50%;
+    margin: 2px;
+  }
+    .lds-ring div:nth-child(1) {
+      animation-delay: -0.45s;
+    }
+    .lds-ring div:nth-child(2) {
+      animation-delay: -0.3s;
+    }
+    .lds-ring div:nth-child(3) {
+      animation-delay: -0.15s;
+    }
+
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

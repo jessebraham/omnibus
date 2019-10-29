@@ -5,7 +5,7 @@
    # order to access the view's name.
    #}
   {% if request.resolver_match.view_name == view_name %}
-    <a href="#" class="ml-6 hover:no-underline text-gray-500">{{ title }}</a>
+    <a href="#" class="cursor-default ml-6 underline">{{ title }}</a>
   {% else %}
     <a href="{{ url(view_name) }}" class="ml-6">{{ title }}</a>
   {% endif %}
@@ -26,7 +26,8 @@
 
 {% macro series_summary(books) -%}
   {#
-   # ???
+   # Display a card containing the Series name, as well as thumbnails for each
+   # Book in the Series.
    #}
   {% set series = books[0].series %}
 

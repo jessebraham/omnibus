@@ -12,7 +12,8 @@ Manage - Omnibus
   <h1 class="my-6">Sync with Goodreads</h1>
   <div class="mb-12">
     <p class="mb-6">Syncing with your Goodreads account can potentially take multiple minutes if you have a large collection; please be patient. You will be automatically redirected when the operation completes.</p>
-    <a href="{{ url('sync') }}">Sync</a>
+    <a href="{{ url('sync') }}" id="sync">Sync</a>
+    {% include "web/partials/_loading.html" %}
   </div>
 
   <h1 class="mb-6">Create Series</h1>
