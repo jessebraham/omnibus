@@ -45,6 +45,7 @@ class BookSchema(BaseSchema):
     publication_day = fields.Integer(allow_none=True)
     average_rating = fields.Float()
     ratings_count = fields.Integer()
+    rating = fields.Integer(allow_none=True)
     sequence_number = fields.Integer(allow_none=True)
 
     @post_load

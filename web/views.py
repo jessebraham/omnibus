@@ -172,6 +172,6 @@ def sync(request):
     for result in books_read_by_user():
         book = BookSchema().load(result["book"])
         if book.id not in read_book_ids:
-            create_book(book.id)
+            create_book(book.id, result.get("rating"))
 
     return redirect("index")

@@ -1,4 +1,5 @@
 {% extends "web/partials/base.html" %}
+{% from "web/macros/components.jinja" import user_rating %}
 
 
 {% block title %}
@@ -49,6 +50,12 @@
       <td>{{ book.average_rating }} <span class="text-sm">({{ book.ratings_count }})</span></td>
     </tr>
   </table>
+
+  <div class="flex items-center mt-3">
+    {% if book.rating %}
+      {{ user_rating(book.rating) }}
+    {% endif %}
+  </div>
 
   {% if book.description %}
     <p class="mb-12 mt-6">{{ book.description.replace("\n", "<br />")|safe }}</p>

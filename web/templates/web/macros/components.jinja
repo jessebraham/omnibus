@@ -44,7 +44,24 @@
   </div>
 {%- endmacro %}
 
+{% macro user_rating(rating, max_rating=5) -%}
+  {#
+   # Display the user rating for a book using stars. Goodreads uses integer
+   # ratings from 1 to 5.
+   #}
+  <p class="mr-4 text-sm uppercase">Your rating</p>
+  {% for i in range(rating) %}
+    <p class="mb-1 text-2xl">★</p>
+  {% endfor %}
+  {% for i in range(max_rating - rating) %}
+    <p class="mb-1 text-2xl">☆</p>
+  {% endfor %}
+{%- endmacro %}
+
 {% macro loading() -%}
+  {#
+   # Display the loading spinner.
+   #}
   <div class="lds-ring inline-block hidden">
     <div></div>
     <div></div>

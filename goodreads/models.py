@@ -64,6 +64,7 @@ class Book(models.Model):
     publication_day = models.IntegerField(null=True)
     average_rating = models.FloatField(null=True)
     ratings_count = models.IntegerField(null=True)
+    rating = models.IntegerField(null=True)
     sequence_number = models.IntegerField(null=True)
 
     @classmethod

@@ -132,10 +132,10 @@ def books_read_by_user():
     return results
 
 
-def create_book(book_id):
+def create_book(book_id, rating=None):
     resp = GoodreadsClient.book(book_id)
+
     book = BookSchema().load(resp)
-    print(book.title)
     book.save()
 
     resp_author = resp["authors"]["author"]
@@ -155,5 +155,7 @@ def create_book(book_id):
         (pub, created) = Publisher.objects.get_or_create(name=resp_publisher)
         book.publisher = pub
 
+    if rating is not None and rating != 0:
+        book.rating = rating
+
     book.save()
-    print(book)
