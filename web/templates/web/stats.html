@@ -8,62 +8,94 @@ Stats - Omnibus
 
 {% block content %}
 <div class="card">
-  <h1 class="my-6">General</h1>
-  <table class="wider">
-    <tr>
-      <td>Authors</td>
-      <td>{{ stats["totals"]["authors"] }}</td>
-    </tr>
-    <tr>
-      <td>Series</td>
-      <td>{{ stats["totals"]["series"] }}</td>
-    </tr>
-    <tr>
-      <td>Books</td>
-      <td>{{ stats["totals"]["books"] }}</td>
-    </tr>
-    <tr>
-      <td>Pages</td>
-      <td>{{ stats["totals"]["pages"] }}</td>
-    </tr>
-  </table>
 
-  <h1 class="my-6">Authors</h1>
-  <table class="wider">
-    <tr>
-      <td>Top Author</td>
-      <td>{{ stats["authors"]["top"] }}</td>
-    </tr>
-    <tr>
-      <td>Books</td>
-      <td>{{ stats["authors"]["count"] }}</td>
-    </tr>
-    <tr>
-      <td>Pages</td>
-      <td>{{ stats["authors"]["pages"] }}</td>
-    </tr>
-  </table>
+  {% if stats["authors"] and stats["series"] %}
+  <div class="flex mb-12">
+    <div class="flex flex-col flex-1">
+      <h1>Top Authors</h1>
+      {% for author in stats["authors"] %}
+        <table class="block flex-1 wider">
+          <tr>
+            <td>Author</td>
+            <td>{{ author.name }}</td>
+          </tr>
+          <tr>
+            <td>Books</td>
+            <td>{{ author.books }}</td>
+          </tr>
+          <tr>
+            <td>Pages</td>
+            <td>{{ author.pages }}</td>
+          </tr>
+        </table>
+      {% endfor %}
+    </div>
+    <div class="flex flex-col flex-1">
+      <h1>Longest Series</h1>
+      {% for series in stats["series"] %}
+        <table class="block flex-1 wider">
+          <tr>
+            <td>Series</td>
+            <td>
+              <a href="{{ url('series', args=[series.id]) }}">{{ series.title }}</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Pages</td>
+            <td>{{ series.pages }}</td>
+          </tr>
+        </table>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
 
-  <h1 class="my-6">Series</h1>
-  <table class="wider">
-    <tr>
-      <td>Longest Series</td>
-      <td>{{ stats["series"]["longest"] }}</td>
-    </tr>
-    <tr>
-      <td>Pages</td>
-      <td>{{ stats["series"]["pages"] }}</td>
-    </tr>
-  </table>
-
-  <h1 class="my-6">Publishers</h1>
-  <table class="wider">
-    {% for (publisher, count) in stats["publishers"].items() %}
-      <tr>
-        <td>{{ publisher }}</td>
-        <td>{{ count }}</td>
-      </tr>
-    {% endfor %}
-  </table>
+  <div class="flex">
+    <div class="flex flex-col flex-1">
+      <h1>Totals</h1>
+      <table class="block flex-1 wider">
+        <tr>
+          <td>Authors</td>
+          <td>{{ stats["totals"]["authors"] }}</td>
+        </tr>
+        <tr>
+          <td>Series</td>
+          <td>{{ stats["totals"]["series"] }}</td>
+        </tr>
+        <tr>
+          <td>Books</td>
+          <td>{{ stats["totals"]["books"] }}</td>
+        </tr>
+        <tr>
+          <td>Publishers</td>
+          <td>{{ stats["totals"]["publishers"] }}</td>
+        </tr>
+        <tr>
+          <td>Pages</td>
+          <td>{{ stats["totals"]["pages"] }}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="flex flex-col flex-1">
+      {% if stats["publishers"] %}
+        <h1>Publisher Totals</h1>
+        <table class="mb-0 wider">
+          {% for (publisher, count) in stats["publishers"].items() %}
+            <tr>
+              <td>
+                {% if publisher %}
+                  <a href="{{ url('publisher', args=[publisher.id]) }}">{{ publisher.name }}</a>
+                {% else %}
+                  <a href="#">None</a>
+                {% endif %}
+              </td>
+              <td>{{ count }}</td>
+            </tr>
+          {% endfor %}
+        </table>
+      {% endif %}
+    </div>
+  </div>
+  
 </div>
 {% endblock %}

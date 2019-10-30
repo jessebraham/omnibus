@@ -10,33 +10,44 @@ Manage - Omnibus
 
 {% block content %}
 <div class="card">
-  <h1 class="my-6">Sync with Goodreads</h1>
+  <h1>Sync with Goodreads</h1>
   <div class="mb-12">
-    <p class="mb-6">Syncing with your Goodreads account can potentially take multiple minutes if you have a large collection; please be patient. You will be automatically redirected when the operation completes.</p>
-    <a href="{{ url('sync') }}" id="sync">Sync</a>
-    {{ loading() }}
+    <p class="mb-6">Syncing with your Goodreads account can be a lengthy process if you have marked many books as read. This can potentially take multiple minutes if you have a large collection. You will be automatically redirected when the operation completes.</p>
+    {% if goodreads_user_id %}
+      <div class="flex items-center mb-6">
+        <p class="mr-6 text-sm uppercase">Goodreads user ID:</p>
+        <a href="https://www.goodreads.com/user/show/{{ goodreads_user_id }}"
+           target="_blank" title="Goodreads user profile (opens in a new tab)" class="text-sm">
+          {{ goodreads_user_id }}
+        </a>
+      </div>
+      <a href="{{ url('sync') }}" id="sync" class="button">Sync</a>
+      {{ loading() }}
+    {% else %}
+      <p class="text-sm uppercase">No Goodreads user ID configured.</p>
+    {% endif %}
   </div>
 
-  <h1 class="mb-6">Create Series</h1>
-  <div class="mb-6">
-    <p class="mb-12">Manually create a series. Goodreads doesn't always have the best data for this.</p>
-    <form method="post" action="">
+  <h1>Create Series</h1>
+  <div class="mb-12">
+    <p class="mb-12">Manually create a series. Goodreads doesn't always have a series defined, or may have a less than optimal series defined.</p>
+    <form method="post">
       <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
 
       {{ text_field("Series ID", placeholder="Series ID")}}
       {{ text_field("Title", placeholder="Series title") }}
-      {{ submit_field("Create series") }}
+      {{ submit_field("Create series", show_cancel=False) }}
     </form>
   </div>
 
   <h1>Create Publisher</h1>
   <div>
-    <p class="mb-12">Manually create a publisher. Goodreads doesn't always have the best data for this.</p>
-    <form method="post" action="">
+    <p class="mb-12">Manually create a publisher. Goodreads doesn't always have a publisher defined.</p>
+    <form method="post">
       <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
 
       {{ text_field("Name", placeholder="Publisher name") }}
-      {{ submit_field("Create publisher") }}
+      {{ submit_field("Create publisher", show_cancel=False) }}
     </form>
   </div>
 </div>

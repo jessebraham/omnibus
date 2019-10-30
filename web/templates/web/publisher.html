@@ -8,7 +8,7 @@
 
 
 {% block content %}
-<p class="font-thin mb-8 text-3xl tracking-wide uppercase">{{ publisher.name }}</p>
+<h1 class="mb-8">{{ publisher.name }}</h1>
 <div class="flex flex-col">
   {% for (series_title, series_id) in books|sort %}
     {{ series_summary(books[(series_title, series_id)]) }}

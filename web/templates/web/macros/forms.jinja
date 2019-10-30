@@ -9,12 +9,19 @@
   </fieldset>
 {%- endmacro %}
 
-{% macro submit_field(value) -%}
+{% macro submit_field(value, show_cancel=True) -%}
   {#
    # Create a fieldset containing a submit input with the specified value.
+   # Optionally display a cancel button which just kicks the user back to the
+   # previous page in their history.
    #}
   <fieldset>
     <p><!-- spacer --></p>
-    <input type="submit" value="{{ value }}" />
+    <p>
+      <input type="submit" value="{{ value }}" />
+      {% if show_cancel %}
+        <a href="javascript:history.back()" class="ml-6">Cancel</a>
+      {% endif %}
+    </p>
   </fieldset>
 {%- endmacro %}

@@ -17,8 +17,8 @@
    # Display a single search result, showing its cover thumbnail, title, author,
    # and rating. Additionally have a link to mark a result as read.
    #}
-  <div class="search-result-item">
-    <figure>
+  <div class="border border-gray-500 bg-white flex justify-between mb-3 px-6 py-3">
+    <figure class="mr-6">
       <img src="{{ work['best_book']['image_url'] }}" />
     </figure>
     <div class="flex flex-col justify-center flex-1">
@@ -52,13 +52,15 @@
    # Show the current page number, as well as the Prev and/or Next buttons if
    # required.
    #}
-  <div class="paginator">
-    {% if results["results_start"]|int > 1 %}
-      <span id="prev-page">Prev</span>
-    {% endif %}
-    <p id="page-number">Page {{ page }}</p>
-    {% if results["results_end"]|int < results["total_results"]|int %}
-      <span id="next-page">Next</span>
-    {% endif %}
-  </div>
+  {% if results["total_results"]|int > 0 %}
+    <div class="paginator">
+      {% if results["results_start"]|int > 1 %}
+        <span id="prev-page">Prev</span>
+      {% endif %}
+      <p id="page-number">Page {{ page }}</p>
+      {% if results["results_end"]|int < results["total_results"]|int %}
+        <span id="next-page">Next</span>
+      {% endif %}
+    </div>
+  {% endif %}
 {%- endmacro %}

@@ -9,14 +9,16 @@
 
 {% block content %}
 <div class="card">
-  <h1>Edit Series</h1>
-  <h2 class="mb-12">{{ series.title }}</h2>
+  <div class="mb-12">
+    <h1>Edit Series</h1>
+    <h2>{{ series.title }}</h2>
+  </div>
 
   <form method="post" action="{{ url('edit_series', args=[series.id]) }}">
     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
 
     {{ text_field("Title", value=series.title) }}
-    {{ submit_field("Update") }}
+    {{ submit_field("Update series") }}
   </form>
 </div>
 {% endblock %}

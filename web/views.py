@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.db.models.functions import Lower
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
@@ -59,7 +61,11 @@ def manage(request):
             publisher = Publisher(name=publisher_name)
             publisher.save()
 
-    return render(request, "web/manage.html")
+    return render(
+        request,
+        "web/manage.html",
+        context={"goodreads_user_id": settings.GOODREADS_USER_ID},
+    )
 
 
 def series(request, series_id):
@@ -101,7 +107,8 @@ def edit_book(request, book_id):
 
     if request.method == "POST":
         book.title = request.POST.get("title", book.title)
-        book.publisher = request.POST.get("publisher", book.publisher)
+        publisher = request.POST.get("publisher", book.publisher)
+        book.publisher = Publisher.objects.get(id=publisher)
         book.series = Series.objects.get(
             id=request.POST.get("series", book.series.id)
         )
@@ -113,8 +120,8 @@ def edit_book(request, book_id):
         "web/edit_book.html",
         context={
             "book": book,
-            "publishers": Publisher.objects.all(),
-            "series": Series.objects.all(),
+            "publishers": Publisher.objects.order_by(Lower("name")),
+            "series": Series.objects.order_by(Lower("title")),
         },
     )
 

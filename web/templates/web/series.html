@@ -13,10 +13,14 @@
     <h1>{{ series.title }}</h1>
     <a href="{{ url('edit_series', args=[series.id]) }}" class="ml-6 text-xs">Edit</a>
   </div>
-    {% if books[0].series.id != 0 and books[0].publisher %}
-      <a href="{{ url('publisher', args=[books[0].publisher.id]) }}" class="text-gray-700 text-base uppercase">{{ books[0].publisher.name }}</a>
-    {% endif %}
+  {% if books[0].series.id != 0 and books[0].publisher %}
+    <h2>
+      <a href="{{ url('publisher', args=[books[0].publisher.id]) }}">{{ books[0].publisher.name }}</a>
+    </h2>
+  {% endif %}
+
   <div class="mb-12 mt-6">{{ series.description.replace("\n", "<br />")|safe }}</div>
+
   <div class="flex flex-wrap">
     {% for book in books %}
       {{ thumbnail(book) }}

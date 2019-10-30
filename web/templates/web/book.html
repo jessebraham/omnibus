@@ -14,42 +14,51 @@
     <a href="{{ url('edit_book', args=[book.id]) }}" class="ml-6 text-xs">Edit</a>
   </div>
 
-  {% if book.publisher %}
-    <a href="{{ url('publisher', args=[book.publisher.id]) }}" class="text-gray-700 text-base uppercase">{{ book.publisher.name }}</a>
-  {% endif %}
-
-  <table>
-    <tr>
-      <td>Authors</td>
-      <td>
-      {% for author in book.authors.all() %}
-        {{ author.name }}
-        {% if author.role %}
-          <span class="text-sm">({{ author.role }})</span>
-        {% endif %}
-        <br />
-      {% endfor %}
-      </td>
-    </tr>
-    {% if book.series %}
-    <tr>
-      <td>Series</td>
-      <td><a href="{{ url('series', args=[book.series.id]) }}">{{ book.series.title }}</a></td>
-    </tr>
-    {% endif %}
-    <tr>
-      <td>Published</td>
-      <td>{{ book.published if book.published else "-" }}</td>
-    </tr>
-    <tr>
-      <td>Page Count</td>
-      <td>{{ book.num_pages if book.num_pages else "-" }}</td>
-    </tr>
-    <tr>
-      <td>Rating</td>
-      <td>{{ book.average_rating }} <span class="text-sm">({{ book.ratings_count }})</span></td>
-    </tr>
-  </table>
+  <div class="flex items-center mt-6">
+    <img src="{{ book.image_url }}" title="{{ book.title }}" />
+    <table class="ml-12">
+      <tr>
+        <td>Authors</td>
+        <td>
+          {% for author in book.authors.all() %}
+            {{ author.name }}
+            {% if author.role %}
+              <span class="text-sm">({{ author.role }})</span>
+            {% endif %}
+            <br />
+          {% endfor %}
+        </td>
+      </tr>
+      {% if book.series %}
+        <tr>
+          <td>Series</td>
+          <td><a href="{{ url('series', args=[book.series.id]) }}">{{ book.series.title }}</a></td>
+        </tr>
+      {% endif %}
+      {% if book.publisher %}
+        <tr>
+          <td>Publisher</td>
+          <td><a href="{{ url('publisher', args=[book.publisher.id]) }}">{{ book.publisher.name }}</a></td>
+        </tr>
+      {% endif %}
+      {% if book.published %}
+        <tr>
+          <td>Published</td>
+          <td>{{ book.published }}</td>
+        </tr>
+      {% endif %}
+      {% if book.num_pages %}
+        <tr>
+          <td>Page Count</td>
+          <td>{{ book.num_pages }}</td>
+        </tr>
+      {% endif %}
+      <tr>
+        <td>Rating</td>
+        <td>{{ book.average_rating }} <span class="text-sm">({{ book.ratings_count }})</span></td>
+      </tr>
+    </table>
+  </div>
 
   <div class="flex items-center mt-3">
     {% if book.rating %}
@@ -58,9 +67,7 @@
   </div>
 
   {% if book.description %}
-    <p class="mb-12 mt-6">{{ book.description.replace("\n", "<br />")|safe }}</p>
+    <p class="italic mt-6">{{ book.description.replace("\n", "<br />")|safe }}</p>
   {% endif %}
-
-  <img src="{{ book.image_url }}" title="{{ book.title }}" />
 </div>
 {% endblock %}
