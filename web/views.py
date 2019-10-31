@@ -7,12 +7,8 @@ from goodreads.client import GoodreadsClient
 from goodreads.models import Book, Publisher, Series
 from goodreads.schemas import BookSchema
 
-from .helpers import (
-    books_read_by_user,
-    categorize_by_series,
-    collection_stats,
-    create_book,
-)
+from .helpers import books_read_by_user, categorize_by_series, create_book
+from .stats import Stats
 
 
 # ----------------------------------------------------------------------------
@@ -44,7 +40,7 @@ def search(request):
 
 def stats(request):
     return render(
-        request, "web/stats.html", context={"stats": collection_stats()}
+        request, "web/stats.html", context={"stats": Stats.collection_stats()}
     )
 
 

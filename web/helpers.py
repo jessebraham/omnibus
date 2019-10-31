@@ -23,83 +23,6 @@ def categorize_by_series(book_list):
     return books
 
 
-def collection_stats():
-    return {
-        "totals": _totals_stats(),
-        "authors": _author_stats(),
-        "series": _longest_series_stats(),
-        "publishers": _publisher_stats(),
-    }
-
-
-def _totals_stats():
-    total_pages = sum(
-        b.num_pages if b.num_pages else 0 for b in Book.objects.all()
-    )
-
-    return {
-        "authors": Author.objects.count(),
-        "series": Series.objects.count(),
-        "books": Book.objects.count(),
-        "pages": f"{total_pages:,}",
-    }
-
-
-def _author_stats():
-    books = defaultdict(list)
-
-    # Query all Books and sort them by Author name.
-    for book in Book.objects.all():
-        for author in book.authors.all():
-            books[author.name].append(book)
-
-    # Attempt to determine the top Author, as well as how many Books they have
-    # in the collection.
-    try:
-        top_author = max(books, key=lambda k: len(books[k]))
-        top_author_count = len(books[top_author])
-        top_author_pages = sum(
-            b.num_pages if b.num_pages else 0 for b in books[top_author]
-        )
-    except:
-        top_author = None
-        top_author_count = top_author_pages = 0
-
-    return {
-        "top": top_author,
-        "count": top_author_count,
-        "pages": f"{top_author_pages:,}",
-    }
-
-
-def _longest_series_stats():
-    books = defaultdict(list)
-
-    # Query all Books and sort them by Series title.
-    for book in Book.objects.all():
-        books[book.series.title].append(book)
-
-    longest = None
-    num_pages = 0
-
-    for (series_title, series) in books.items():
-        series_pages = sum(b.num_pages if b.num_pages else 0 for b in series)
-        if series_pages > num_pages:
-            longest = series_title
-            num_pages = series_pages
-
-    return {"longest": longest, "pages": f"{num_pages:,}"}
-
-
-def _publisher_stats():
-    books = defaultdict(list)
-
-    for book in Book.objects.all().order_by("publisher"):
-        books[book.publisher].append(book)
-
-    return {key: len(value) for (key, value) in books.items()}
-
-
 def try_get_series(work_id):
     try:
         series = GoodreadsClient.series(work_id)
@@ -159,3 +82,4 @@ def create_book(book_id, rating=None):
         book.rating = rating
 
     book.save()
+    print(book)
