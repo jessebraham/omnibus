@@ -1,0 +1,19 @@
+-r requirements.txt
+
+dj-database-url==0.5.0
+
+
+# Uncomment one of the following database adapters if you plan on using
+# something other than SQLite in production.
+#
+# Information on additional third-party backends can be found at:
+# https://docs.djangoproject.com/en/2.2/ref/databases/#using-a-3rd-party-database-backend
+
+# PostgreSQL
+# psycopg2==2.8.4
+
+# MySQL
+# mysqlclient==1.4.4
+
+# Oracle
+# cx-Oracle==7.2.3
