@@ -103,8 +103,9 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-# npm & build files
+# npm & build files, collected static files
 node_modules/
+staticfiles/
 webpack-stats.json
 
 # VS Code

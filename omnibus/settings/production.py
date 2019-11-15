@@ -24,4 +24,10 @@ ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost").split(",")
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 # For more info see: https://github.com/jacobian/dj-database-url
-DATABASES = {"default": {dj_database_url.config()}}
+DATABASES = {"default": dj_database_url.config()}
+
+
+# WhiteNoise settings
+# http://whitenoise.evans.io/en/stable/index.html
+
+MIDDLEWARE += ["whitenoise.middleware.WhiteNoiseMiddleware"]

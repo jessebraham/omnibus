@@ -1,16 +1,17 @@
 -r requirements.txt
 
 dj-database-url==0.5.0
+gunicorn==19.9.0
+whitenoise==4.1.4
 
 
-# Uncomment one of the following database adapters if you plan on using
-# something other than SQLite in production.
+# Select the desired database driver below. Not required if using SQLite.
 #
 # Information on additional third-party backends can be found at:
 # https://docs.djangoproject.com/en/2.2/ref/databases/#using-a-3rd-party-database-backend
 
 # PostgreSQL
-# psycopg2==2.8.4
+psycopg2==2.8.4
 
 # MySQL
 # mysqlclient==1.4.4

@@ -107,6 +107,8 @@ STATIC_URL = "/static/"
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "web", "static")]
 
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
 
 # django-webpack-loader
 # https://github.com/owais/django-webpack-loader
