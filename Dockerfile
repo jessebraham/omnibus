@@ -29,3 +29,9 @@ RUN pip install --no-cache-dir -r requirements.prod.txt
 # Clean up when finished.
 RUN npm install && npm run prod
 RUN rm -rf node_modules
+
+# Collect all static files.
+RUN python manage.py collectstatic
+
+# Specify the entrypoint script, which takes care of launching the application.
+ENTRYPOINT ["sh", "/opt/omnibus/docker-entrypoint.sh"]
