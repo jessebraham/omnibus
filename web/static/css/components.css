@@ -49,6 +49,17 @@
     }
 
 
+/* Message component styles */
+
+.messages {
+  @apply mb-12;
+}
+
+  .messages li {
+    @apply uppercase;
+  }
+
+
 /* Loading spinner component styles */
 
 .lds-ring {

@@ -1,4 +1,7 @@
+from datetime import datetime
+
 from django.conf import settings
+from django.contrib import messages
 from django.db.models.functions import Lower
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
@@ -7,7 +10,8 @@ from goodreads.client import GoodreadsClient
 from goodreads.models import Book, Publisher, Series
 from goodreads.schemas import BookSchema
 
-from .helpers import books_read_by_user, categorize_by_series, create_book
+from .helpers import categorize_by_series, create_book, last_sync, next_sync
+from .jobs import scheduler
 from .stats import Stats
 
 
@@ -19,7 +23,10 @@ def index(request):
     return render(
         request,
         "web/index.html",
-        context={"books": categorize_by_series(Book.objects.all())},
+        context={
+            "books": categorize_by_series(Book.objects.all()),
+            "messages": messages.get_messages(request),
+        },
     )
 
 
@@ -60,7 +67,11 @@ def manage(request):
     return render(
         request,
         "web/manage.html",
-        context={"goodreads_user_id": settings.GOODREADS_USER_ID},
+        context={
+            "goodreads_user_id": settings.GOODREADS_USER_ID,
+            "last_sync_time": last_sync(),
+            "next_sync_time": next_sync(),
+        },
     )
 
 
@@ -168,13 +179,10 @@ def remove(request):
 
 
 def sync(request):
-    # Create a set of all read Book IDs, so that we can quickly determine
-    # whether or not the Book in question needs to be synced.
-    read_book_ids = {b.id for b in Book.objects.all()}
+    (job, jobstore) = scheduler._lookup_job("sync", "default")
+    now = datetime.now(scheduler.timezone)
+    scheduler.modify_job(job.id, jobstore, next_run_time=now)
 
-    for result in books_read_by_user():
-        book = BookSchema().load(result["book"])
-        if book.id not in read_book_ids:
-            create_book(book.id, result.get("rating"))
+    messages.info(request, "Syncing with Goodreads in the background")
 
     return redirect("index")

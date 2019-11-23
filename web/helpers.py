@@ -1,6 +1,9 @@
 from collections import defaultdict
+from datetime import datetime
 
 from django.conf import settings
+from django.utils import timezone
+from django_apscheduler.models import DjangoJob, DjangoJobExecution
 
 from goodreads.client import GoodreadsClient
 from goodreads.models import Author, Book, Publisher, Series
@@ -82,4 +85,24 @@ def create_book(book_id, rating=None):
         book.rating = rating
 
     book.save()
-    print(book)
+
+
+def last_sync():
+    executions = DjangoJobExecution.objects.order_by("-finished")
+    if len(executions) == 0 or executions[0].finished is None:
+        return None
+
+    dt = datetime.fromtimestamp(executions[0].finished)
+    dt = timezone.make_aware(dt)
+
+    return dt.strftime("%Y-%m-%d %H:%M:%S %Z")
+
+
+def next_sync():
+    job = DjangoJob.objects.get(name="sync")
+    if not job:
+        return None
+
+    dt = timezone.localtime(job.next_run_time)
+
+    return dt.strftime("%Y-%m-%d %H:%M:%S %Z")

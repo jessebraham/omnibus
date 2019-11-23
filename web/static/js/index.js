@@ -55,20 +55,3 @@ const changePage = modifier => {
     `page=${page + modifier}`,
   );
 };
-
-// Syncing with Goodreads
-//
-// Since it takes so damn long, change the button text and display a loading
-// spinner when the sync begins.
-
-const sync = document.querySelector("#sync");
-const lds = document.querySelector(".lds-ring");
-if (sync && lds) {
-  sync.addEventListener("click", () => {
-    sync.innerText = "syncing...";
-    sync.classList.add("cursor-default");
-    sync.classList.add("hover:no-underline");
-
-    lds.classList.remove("hidden");
-  });
-}

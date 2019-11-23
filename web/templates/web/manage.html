@@ -1,5 +1,4 @@
 {% extends "web/partials/base.html" %}
-{% from "web/macros/components.jinja" import loading %}
 {% from "web/macros/forms.jinja" import text_field, submit_field %}
 
 
@@ -12,17 +11,24 @@ Manage - Omnibus
 <div class="card">
   <h1>Sync with Goodreads</h1>
   <div class="mb-12">
-    <p class="mb-6">Syncing with your Goodreads account can be a lengthy process if you have marked many books as read. This can potentially take multiple minutes if you have a large collection. You will be automatically redirected when the operation completes.</p>
+    <p class="mb-6">Syncing with your Goodreads account can be a lengthy process if you have read a large number of books. Because of this, the sync takes place in the background. You may continue to use the site once the sync has been started.</p>
     {% if goodreads_user_id %}
-      <div class="flex items-center mb-6">
-        <p class="mr-6 text-sm uppercase">Goodreads user ID:</p>
+      <div class="flex items-center mb-3">
+        <p class="text-sm uppercase w-40">Goodreads user ID:</p>
         <a href="https://www.goodreads.com/user/show/{{ goodreads_user_id }}"
            target="_blank" title="Goodreads user profile (opens in a new tab)" class="text-sm">
           {{ goodreads_user_id }}
         </a>
       </div>
+      <div class="flex items-center mb-1">
+        <p class="text-sm uppercase w-40">Last sync:</p>
+        <span class="text-sm">{{ last_sync_time if last_sync_time else "-" }}</span>
+      </div>
+      <div class="flex items-center mb-6">
+        <p class="text-sm uppercase w-40">Next sync:</p>
+        <span class="text-sm">{{ next_sync_time if next_sync_time else "-" }}</span>
+      </div>
       <a href="{{ url('sync') }}" id="sync" class="button">Sync</a>
-      {{ loading() }}
     {% else %}
       <p class="text-sm uppercase">No Goodreads user ID configured.</p>
     {% endif %}

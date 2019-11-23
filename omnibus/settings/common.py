@@ -28,10 +28,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # third-party apps
+    "django_apscheduler",
     "webpack_loader",
     # local apps
     "goodreads",
-    "web",
+    "web.apps.WebConfig",
 ]
 
 MIDDLEWARE = [
@@ -91,7 +92,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = os.environ.get("TIME_ZONE", "UTC")
 
 USE_I18N = True
 
@@ -127,3 +128,11 @@ WEBPACK_LOADER = {
 GOODREADS_API_KEY = os.environ.get("GOODREADS_API_KEY")
 
 GOODREADS_USER_ID = os.environ.get("GOODREADS_USER_ID")
+
+
+# Automatic syncing with Goodreads
+# Syncing will be performed every N seconds, where N is `SYNC_INTERVAL`.
+
+SYNC_INTERVAL = int(
+    os.environ.get("SYNC_INTERVAL", 24 * 60 * 60)  # 24 hours by default
+)
