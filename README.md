@@ -2,10 +2,14 @@
 
 **Omnibus** is a simple web application for tracking comic book collections. It is built using [Django](https://www.djangoproject.com/) and backed by the [Goodreads API](https://www.goodreads.com/api/).
 
-- - -
+<div style="padding: 1rem 0; text-align: center">
+  <a href="assets/omnibus_home.png">
+    <img src="assets/omnibus_home_thumb.png" alt="Omnibus home page" />
+  </a>
+</div>
 
 **Omnibus** is made possible by the following packages:  
-[Django](https://github.com/django/django) | [django-webpack-loader](https://github.com/owais/django-webpack-loader) | [httpx](https://github.com/encode/httpx) | [Jinja2](https://github.com/pallets/jinja) | [marshmallow](https://github.com/marshmallow-code/marshmallow) | [xmltodict](https://github.com/martinblech/xmltodict)
+[Django](https://github.com/django/django) | [django-apscheduler](https://github.com/jarekwg/django-apscheduler) | [django-webpack-loader](https://github.com/owais/django-webpack-loader) | [httpx](https://github.com/encode/httpx) | [Jinja2](https://github.com/pallets/jinja) | [marshmallow](https://github.com/marshmallow-code/marshmallow) | [xmltodict](https://github.com/martinblech/xmltodict)
 
 - - -
 
@@ -19,7 +23,7 @@ $ cd omnibus
 $ python -m venv .venv
 $ source .venv/bin/activate
 $ pip install -r requirements.txt
-# Install required NPM packages and build static assets
+# Install required NPM packages, build static assets
 $ npm i && npm run dev
 ```
 
@@ -43,7 +47,7 @@ Navigate to `http://localhost:8000` in your browser to begin.
 
 ## Production
 
-In order to run the application in production mode, a handful more environment variables are required. It's recommended that an `.env` file is created in the project root directory containing the values for these variables:
+In order to run the application in production mode, a handful more environment variables are required. An `.env` file can be created in the project root directory containing the values, and the environment variables can then be set by running `source .env` in a terminal.
 
 ```bash
 # Set the API key and user ID for goodreads.
@@ -61,9 +65,13 @@ export DATABASE_URL=""
 # or a comma-separated list of hosts. Defaults to 'localhost' if this
 # variable is not set.
 export ALLOWED_HOSTS=""
-```
 
-The environment variables can then be set by running `source .env` in a terminal.
+# Timezone and Goodreads sync interval can optionally be modified as
+# well. By default, the timezone is UTC and the sync interval is 24
+# hours. Sync interval should be provided in seconds.
+export TIME_ZONE=""
+export SYNC_INTERVAL=""
+```
 
 Additionally, you should ensure that the CSS and JS have been built in production mode to minimize bundle size, and that the static files have been collected.
 
