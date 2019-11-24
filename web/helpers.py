@@ -92,8 +92,8 @@ def last_sync():
     if len(executions) == 0 or executions[0].finished is None:
         return None
 
-    dt = datetime.fromtimestamp(executions[0].finished)
-    dt = timezone.make_aware(dt)
+    dt = datetime.fromtimestamp(executions[0].finished, tz=timezone.utc)
+    dt = timezone.localtime(dt)
 
     return dt.strftime("%Y-%m-%d %H:%M:%S %Z")
 

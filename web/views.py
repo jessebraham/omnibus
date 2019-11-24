@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.db.models.functions import Lower
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
+from django.utils import timezone
 
 from goodreads.client import GoodreadsClient
 from goodreads.models import Book, Publisher, Series
@@ -180,8 +181,7 @@ def remove(request):
 
 def sync(request):
     (job, jobstore) = scheduler._lookup_job("sync", "default")
-    now = datetime.now(scheduler.timezone)
-    scheduler.modify_job(job.id, jobstore, next_run_time=now)
+    scheduler.modify_job(job.id, jobstore, next_run_time=timezone.now())
 
     messages.info(request, "Syncing with Goodreads in the background")
 

@@ -6,8 +6,10 @@ set -e
 # that it's loading from the production settings.
 export DJANGO_SETTINGS_MODULE="omnibus.settings.production"
 
-# Run all database migrations prior to running the application.
+# Run all database migrations and collect all static files prior to running the
+# application.
 python manage.py migrate
+python manage.py collectstatic
 
 # Run the application using gunicorn. Increase the default timeout and set the
 # thread type while we're at it.
