@@ -3,12 +3,12 @@
 
 
 {% block title %}
-{{ publisher.name }} - Omnibus
+{{ publisher.name or "No publisher" }} - Omnibus
 {% endblock %}
 
 
 {% block content %}
-<h1 class="mb-8">{{ publisher.name }}</h1>
+<h1 class="mb-8">{{ publisher.name or "No publisher" }}</h1>
 <div class="flex flex-col">
   {% for (series_title, series_id) in books|sort %}
     {{ series_summary(books[(series_title, series_id)]) }}

@@ -87,11 +87,7 @@ Stats - Omnibus
           {% for (publisher, count) in stats["publishers"].items() %}
             <tr>
               <td>
-                {% if publisher %}
-                  <a href="{{ url('publisher', args=[publisher.id]) }}">{{ publisher.name }}</a>
-                {% else %}
-                  <a href="#">None</a>
-                {% endif %}
+                <a href="{{ url('publisher', args=[publisher.id or 0]) }}">{{ publisher.name or "No publisher" }}</a>
               </td>
               <td>{{ count }}</td>
             </tr>

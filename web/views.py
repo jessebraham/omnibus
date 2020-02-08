@@ -135,7 +135,10 @@ def edit_book(request, book_id):
 
 
 def publisher(request, publisher_id):
+    if publisher_id == 0:
+        publisher_id = None
     books = Book.objects.filter(publisher__id=publisher_id)
+
     if not books:
         return redirect("index")
 
