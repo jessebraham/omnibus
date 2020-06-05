@@ -1,4 +1,4 @@
-Django==2.2.10
+Django==2.2.13
 django-apscheduler==0.3.0
 django-webpack-loader==0.6.0
 httpx==0.7.4
